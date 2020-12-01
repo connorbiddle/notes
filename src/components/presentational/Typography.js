@@ -7,7 +7,8 @@ export const MainTitle = styled.h1`
 `;
 
 export const SmallText = styled.div`
-  color: ${({ light }) => (light ? "#fff" : "#111")};
+  color: ${({ theme, light }) =>
+    light ? theme.colors.light : theme.colors.dark};
   font-size: 1.125rem;
   font-weight: normal;
 `;

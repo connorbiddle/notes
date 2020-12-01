@@ -15,9 +15,10 @@ const TitleBar = () => {
 
 const StyledTitleBar = styled.section`
   padding: 1.5rem 0;
+  text-align: center;
 
-  @media (max-width: ${({ theme }) => theme.sizes.mobile}) {
-    text-align: center;
+  @media (min-width: ${({ theme }) => theme.sizes.sm}) {
+    text-align: left;
   }
 `;
 
