@@ -8,14 +8,17 @@ const placeholderRoutines = [
     title: "Main Routine",
     tasks: [
       {
-        name: "Minor Pentatonic Scale",
+        id: 0,
+        name: "Minor Pentatonic Scale lorem ipsum dolor",
         duration: 300,
       },
       {
-        name: "Chords",
+        id: 1,
+        name: "Open Chords",
         duration: 600,
       },
       {
+        id: 2,
         name: "Song Practice",
         duration: 1800,
       },
@@ -26,16 +29,14 @@ const placeholderRoutines = [
     title: "Routine 2",
     tasks: [
       {
-        name: "Minor Pentatonic Scale",
+        id: 0,
+        name: "Major Scale",
         duration: 300,
       },
       {
-        name: "Chords",
-        duration: 600,
-      },
-      {
-        name: "Song Practice",
-        duration: 1800,
+        id: 1,
+        name: "Barre Chords",
+        duration: 900,
       },
     ],
   },
@@ -44,16 +45,24 @@ const placeholderRoutines = [
     title: "Routine 3",
     tasks: [
       {
-        name: "Minor Pentatonic Scale",
+        id: 0,
+        name: "Chromatic Scale",
         duration: 300,
       },
       {
-        name: "Chords",
+        id: 1,
+        name: "Sweep Picking",
         duration: 600,
       },
       {
-        name: "Song Practice",
+        id: 2,
+        name: "Legato",
         duration: 1800,
+      },
+      {
+        id: 3,
+        name: "Pentatonic Blues Licks",
+        duration: 2700,
       },
     ],
   },

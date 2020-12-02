@@ -1,8 +1,17 @@
 const theme = {
+  spacing: {
+    sm: "0.65rem",
+    md: "1rem",
+    lg: "2rem",
+  },
   colors: {
     primary: "#403380",
     light: "#FFFFFF",
+    success: "#64A764",
+    danger: "#B75050",
     dark: "#111111",
+    darkGrey: "#7E7E7E",
+    lightGrey: "#D5D5D5",
   },
   sizes: {
     sm: "500px",
