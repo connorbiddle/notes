@@ -3,12 +3,16 @@ import { Route } from "react-router-dom";
 import { lighten, saturate } from "polished";
 import Container from "./components/presentational/Container";
 import Home from "./components/views/Home";
+import TitleBar from "./components/parts/TitleBar";
+import RoutineForm from "./components/views/RoutineForm";
 
 function App() {
   return (
     <StyledApp>
       <Container>
+        <TitleBar />
         <Route exact path="/" render={() => <Home />} />
+        <Route exact path="/new" render={() => <RoutineForm />} />
       </Container>
     </StyledApp>
   );

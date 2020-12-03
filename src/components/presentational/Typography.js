@@ -24,6 +24,10 @@ export const SmallText = styled.div`
   font-size: 1.125rem;
   font-weight: normal;
   line-height: 1.5;
+
+  a {
+    text-decoration: underline;
+  }
 `;
 
 export const Muted = styled.span`

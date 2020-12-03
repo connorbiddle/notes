@@ -2,11 +2,11 @@ import Card from "../presentational/Card";
 import { Title, Muted } from "../presentational/Typography";
 import { List, ListItem } from "../presentational/List";
 import { Row, Column } from "../presentational/Grid";
-import { toTimeString } from "../../utlities";
+import { toTimeString } from "../../utilities";
 
 const ActiveRoutine = ({ routine }) => {
   return (
-    <Card mb="1rem">
+    <Card mb="1rem" fadeIn key={routine.id}>
       <Title>{routine.title}</Title>
       <List>
         {routine.tasks.map(task => (

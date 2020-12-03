@@ -5,7 +5,9 @@ import { MainTitle, SmallText } from "../presentational/Typography";
 const TitleBar = () => {
   return (
     <StyledTitleBar>
-      <MainTitle>Notes</MainTitle>
+      <Link to="/">
+        <MainTitle>Notes</MainTitle>
+      </Link>
       <SmallText light>
         First time? <Link to="/help">Read this</Link>.
       </SmallText>

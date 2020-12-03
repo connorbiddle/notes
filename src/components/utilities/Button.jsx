@@ -33,6 +33,7 @@ const StyledButton = styled.button`
   padding: 0.75rem 1.5rem;
   border: none;
   transition: background 250ms ease-out;
+  text-decoration: none;
 
   &:hover {
     background: ${({ theme, type }) =>

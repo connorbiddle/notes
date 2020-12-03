@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 const Card = styled.div`
   background-color: ${({ theme }) => theme.colors.light};
@@ -7,6 +7,15 @@ const Card = styled.div`
   padding: 1.5rem;
   margin-top: ${({ mt }) => mt && mt};
   margin-bottom: ${({ mb }) => mb && mb};
+
+  animation: ${({ theme, fadeIn }) =>
+    fadeIn ? theme.animations.fadeIn : "none"};
+
+  ${({ theme, fadeIn }) =>
+    fadeIn &&
+    css`
+      animation: 800ms ${theme.animations.fadeIn} ease;
+    `}
 `;
 
 export default Card;
