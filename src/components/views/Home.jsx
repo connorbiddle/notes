@@ -15,10 +15,10 @@ const Home = () => {
   return (
     <section>
       <Row>
-        <Column md={8}>
+        <Column lg={8}>
           <ActiveRoutine routine={activeRoutine} />
         </Column>
-        <Column md={4}>
+        <Column lg={4}>
           <RoutineList
             setRoutine={setRoutineById}
             activeRoutine={activeRoutine}

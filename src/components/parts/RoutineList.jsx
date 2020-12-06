@@ -11,10 +11,11 @@ const RoutineList = ({ setRoutine, activeRoutine }) => {
 
   return (
     <Card fadeIn key={activeRoutine.id}>
-      <Title>Your Routines</Title>
+      <Title textAlign="center">Your Routines</Title>
       <List mbot>
         {routines.map(routine => (
           <ListItem
+            hoverable
             key={routine.id}
             onClick={() => setRoutine(routine.id)}
             active={routine.id === activeRoutine.id}

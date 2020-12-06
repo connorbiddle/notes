@@ -8,13 +8,21 @@ export const MainTitle = styled.h1`
 `;
 
 export const Title = styled.h2`
+  margin-bottom: ${({ theme, mbot }) => mbot || theme.spacing.sm};
+  text-align: ${({ textAlign }) => textAlign && textAlign};
   font-size: 1.5rem;
   font-weight: bold;
-  margin-bottom: ${({ theme, mbot }) => mbot || theme.spacing.sm};
 
   @media (min-width: ${({ theme }) => theme.sizes.sm}) {
     margin-bottom: ${({ theme }) => theme.spacing.sm};
   }
+
+  ${({ theme, centerUntilLg }) =>
+    centerUntilLg &&
+    `
+      text-align: center;
+      @media (min-width: ${theme.sizes.lg}) { text-align: left; }
+    `}
 `;
 
 export const SmallText = styled.div`

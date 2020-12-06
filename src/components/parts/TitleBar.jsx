@@ -19,7 +19,7 @@ const StyledTitleBar = styled.section`
   padding: 1.5rem 0;
   text-align: center;
 
-  @media (min-width: ${({ theme }) => theme.sizes.md}) {
+  @media (min-width: ${({ theme }) => theme.sizes.lg}) {
     text-align: left;
   }
 `;

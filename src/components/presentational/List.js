@@ -1,10 +1,23 @@
 import styled, { css } from "styled-components";
 
+export const ListItem = ({ children, onClick, theme, hoverable, active }) => {
+  return (
+    <StyledListItem
+      onClick={onClick}
+      theme={theme}
+      hoverable={hoverable}
+      active={active}
+    >
+      {hoverable ? <div>{children}</div> : children}
+    </StyledListItem>
+  );
+};
+
 export const List = styled.ul`
   margin-bottom: ${({ theme, mbot }) => (mbot ? theme.spacing.md : 0)};
 `;
 
-export const ListItem = styled.li`
+const StyledListItem = styled.li`
   cursor: ${({ onClick }) => (onClick ? "pointer" : "default")};
   padding: ${({ theme }) => theme.spacing.sm} 0;
   position: relative;
@@ -25,6 +38,18 @@ export const ListItem = styled.li`
 
       padding-left: ${theme.spacing.md};
     `};
+
+  ${({ theme, hoverable, active }) =>
+    hoverable &&
+    !active &&
+    css`
+      div {
+        transition: transform 350ms ease;
+      }
+      &:hover div {
+        transform: translateX(0.5rem);
+      }
+    `}
 
   border-bottom: 1px solid ${({ theme }) => theme.colors.lightGrey};
   font-size: 1rem;
