@@ -8,6 +8,8 @@ export const Row = styled.div`
   display: flex;
   flex-wrap: wrap;
   margin: 0 -${({ theme }) => theme.spacing.md};
+  margin-top: ${({ theme, mTop }) => mTop && theme.spacing.md};
+  margin-bottom: ${({ theme, mBot }) => mBot && theme.spacing.md};
 `;
 
 export const Column = styled.div`

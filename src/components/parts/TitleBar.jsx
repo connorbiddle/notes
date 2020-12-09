@@ -1,16 +1,16 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { MainTitle, SmallText } from "../presentational/Typography";
+import { MainTitle } from "../presentational/Typography";
 
 const TitleBar = () => {
   return (
     <StyledTitleBar>
-      <Link to="/">
-        <MainTitle>Notes</MainTitle>
-      </Link>
-      <SmallText light>
+      <MainTitle>
+        <Link to="/">Notes</Link>
+      </MainTitle>
+      {/* <SmallText light>
         First time? <Link to="/help">Read this</Link>.
-      </SmallText>
+      </SmallText> */}
     </StyledTitleBar>
   );
 };

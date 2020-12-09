@@ -1,14 +1,42 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import Input from "../utilities/Input";
+import TimeSelector from "../utilities/TimeSelector";
 import Card from "../presentational/Card";
 import { Column, Row } from "../presentational/Grid";
-import Input from "../utilities/Input";
+import { RoutinesContext } from "../../RoutinesContext";
+import { v4 as uuid } from "uuid";
+import { SmallText } from "../presentational/Typography";
+import Button from "../utilities/Button";
 
 const RoutineForm = ({ editing }) => {
-  // const [id, setId] = useState(editing ? editing.id : "uuid");
-  const [title, setTitle] = useState(editing ? editing.title : "");
-  // const [tasks, setTasks] = useState(editing ? editing.tasks : []);
+  const [routines] = useContext(RoutinesContext);
 
-  const handleTitleChange = e => setTitle(e.target.value);
+  const [routine, setRoutine] = useState({
+    id: editing ? routines[editing].id : uuid(),
+    title: editing ? routines[editing].title : "",
+    tasks: editing ? routines[editing].tasks : [],
+  });
+
+  const [newTask, setNewTask] = useState("");
+
+  const handleTitleChange = e =>
+    setRoutine(oldRoutine => ({ ...oldRoutine, title: e.target.value }));
+
+  const handleTaskChange = e =>
+    setRoutine(oldRoutine => {
+      const taskToChange = oldRoutine.tasks.findIndex(
+        task => task.id === parseInt(e.target.name)
+      );
+
+      const newTasks = [...oldRoutine.tasks];
+      newTasks[taskToChange].name = e.target.value;
+
+      const newRoutine = { ...oldRoutine, tasks: newTasks };
+
+      return newRoutine;
+    });
+
+  const handleNewTaskChange = e => setNewTask(e.target.value);
 
   const handleSubmit = () => {
     console.log("Form submitted.");
@@ -21,10 +49,52 @@ const RoutineForm = ({ editing }) => {
           <form onSubmit={handleSubmit}>
             <Input
               name="title"
-              value={title}
+              value={routine.title}
               onChange={handleTitleChange}
               placeholder={"Routine Title"}
+              large
             />
+            {editing &&
+              routine.tasks.map(task => (
+                <Row key={task.id}>
+                  <Column size="1">
+                    <TimeSelector />
+                  </Column>
+                  <Column size="12">
+                    <Input
+                      name={task.id}
+                      value={task.name}
+                      onChange={handleTaskChange}
+                    />
+                  </Column>
+                </Row>
+              ))}
+            <Row>
+              <Column size="1">
+                <TimeSelector />
+              </Column>
+              <Column size="12">
+                <Input
+                  name={uuid()}
+                  value={newTask}
+                  onChange={handleNewTaskChange}
+                  placeholder="New task..."
+                />
+              </Column>
+            </Row>
+
+            <Row mTop>
+              <Column lg={6}>
+                <Button type="danger" block>
+                  Cancel
+                </Button>
+              </Column>
+              <Column lg={6}>
+                <Button type="success" block>
+                  Submit
+                </Button>
+              </Column>
+            </Row>
           </form>
         </Card>
       </Column>

@@ -1,4 +1,6 @@
-import { createContext } from "react";
+import { createContext, useState } from "react";
+
+const LS_KEY = "notes-routines-v1";
 
 export const RoutinesContext = createContext();
 
@@ -9,7 +11,7 @@ const placeholderRoutines = [
     tasks: [
       {
         id: 0,
-        name: "Minor Pentatonic Scale lorem ipsum dolor",
+        name: "Minor Pentatonic Scale",
         duration: 300,
       },
       {
@@ -68,8 +70,19 @@ const placeholderRoutines = [
   },
 ];
 
-export const RoutinesProvider = ({ children }) => (
-  <RoutinesContext.Provider value={placeholderRoutines}>
-    {children}
-  </RoutinesContext.Provider>
-);
+export const RoutinesProvider = ({ children }) => {
+  const [routines, setRoutineState] = useState(
+    localStorage.getItem(LS_KEY) || placeholderRoutines
+  );
+
+  const setRoutines = newRoutineList => {
+    setRoutineState(newRoutineList);
+    localStorage.setItem(JSON.stringify(newRoutineList));
+  };
+
+  return (
+    <RoutinesContext.Provider value={[routines, setRoutines]}>
+      {children}
+    </RoutinesContext.Provider>
+  );
+};

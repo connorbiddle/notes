@@ -5,7 +5,7 @@ import RoutineList from "../parts/RoutineList";
 import { RoutinesContext } from "../../RoutinesContext";
 
 const Home = () => {
-  const routines = useContext(RoutinesContext);
+  const [routines] = useContext(RoutinesContext);
   const [activeRoutine, setActiveRoutine] = useState(routines[0]);
 
   const setRoutineById = id => {

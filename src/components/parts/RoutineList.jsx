@@ -2,27 +2,34 @@ import React, { useContext } from "react";
 import Card from "../presentational/Card";
 import { Title } from "../presentational/Typography";
 import { List, ListItem } from "../presentational/List";
+import { SmallText } from "../presentational/Typography";
 import { RoutinesContext } from "../../RoutinesContext";
 import Button from "../utilities/Button";
 import { Link } from "react-router-dom";
 
 const RoutineList = ({ setRoutine, activeRoutine }) => {
-  const routines = useContext(RoutinesContext);
+  const [routines] = useContext(RoutinesContext);
+
+  const key = activeRoutine ? activeRoutine.id : null;
 
   return (
-    <Card fadeIn key={activeRoutine.id}>
+    <Card fadeIn key={key}>
       <Title textAlign="center">Your Routines</Title>
       <List mbot>
-        {routines.map(routine => (
-          <ListItem
-            hoverable
-            key={routine.id}
-            onClick={() => setRoutine(routine.id)}
-            active={routine.id === activeRoutine.id}
-          >
-            {routine.title}
-          </ListItem>
-        ))}
+        {routines.length > 0 ? (
+          routines.map(routine => (
+            <ListItem
+              hoverable
+              key={routine.id}
+              onClick={() => setRoutine(routine.id)}
+              active={routine.id === activeRoutine.id}
+            >
+              {routine.title}
+            </ListItem>
+          ))
+        ) : (
+          <SmallText textAlign="center">No routines found.</SmallText>
+        )}
       </List>
       <Link to="/new">
         <Button block type="success" icon="fas fa-plus">

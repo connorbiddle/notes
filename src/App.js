@@ -13,6 +13,11 @@ function App() {
         <TitleBar />
         <Route exact path="/" render={() => <Home />} />
         <Route exact path="/new" render={() => <RoutineForm />} />
+        <Route
+          exact
+          path="/edit/:id"
+          render={({ match }) => <RoutineForm editing={match.params.id} />}
+        />
       </Container>
     </StyledApp>
   );

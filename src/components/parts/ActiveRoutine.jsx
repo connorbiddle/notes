@@ -1,13 +1,24 @@
+import { Link } from "react-router-dom";
 import Card from "../presentational/Card";
-import { Title, Muted } from "../presentational/Typography";
+import Flex from "../presentational/Flex";
+import { Title, Muted, SmallText } from "../presentational/Typography";
 import { List, ListItem } from "../presentational/List";
 import { Row, Column } from "../presentational/Grid";
 import { toTimeString } from "../../utilities";
 
 const ActiveRoutine = ({ routine }) => {
-  return (
+  return routine ? (
     <Card mb="1rem" fadeIn key={routine.id}>
-      <Title centerUntilLg>{routine.title}</Title>
+      <Flex alignItems="center" justifyContent="space-between">
+        <Title centerUntilLg>{routine.title}</Title>
+        <Link to={`/edit/${routine.id}`}>
+          <SmallText>
+            <Muted>
+              Edit <i className="fas fa-edit" />
+            </Muted>
+          </SmallText>
+        </Link>
+      </Flex>
       <List>
         {routine.tasks.map(task => (
           <ListItem key={task.id}>
@@ -22,6 +33,10 @@ const ActiveRoutine = ({ routine }) => {
           </ListItem>
         ))}
       </List>
+    </Card>
+  ) : (
+    <Card fadeIn>
+      <SmallText>Nuffin there!</SmallText>
     </Card>
   );
 };
