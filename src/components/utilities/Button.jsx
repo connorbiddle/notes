@@ -5,13 +5,7 @@ import styled from "styled-components";
 const Button = ({ children, onClick, icon, block, type }) => {
   return (
     <StyledButton onClick={onClick} block={block} type={type}>
-      {children}
-      {icon && (
-        <>
-          &nbsp;
-          <i className={icon} />
-        </>
-      )}
+      {children} {icon && <i className={icon} />}
     </StyledButton>
   );
 };

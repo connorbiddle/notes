@@ -1,11 +1,10 @@
 import React, { useState, useContext } from "react";
 import Input from "../utilities/Input";
-import TimeSelector from "../utilities/TimeSelector";
+import TimeInput from "../utilities/TimeInput";
 import Card from "../presentational/Card";
 import { Column, Row } from "../presentational/Grid";
 import { RoutinesContext } from "../../RoutinesContext";
 import { v4 as uuid } from "uuid";
-import { SmallText } from "../presentational/Typography";
 import Button from "../utilities/Button";
 
 const RoutineForm = ({ editing }) => {
@@ -58,7 +57,7 @@ const RoutineForm = ({ editing }) => {
               routine.tasks.map(task => (
                 <Row key={task.id}>
                   <Column size="1">
-                    <TimeSelector />
+                    <TimeInput />
                   </Column>
                   <Column size="12">
                     <Input
@@ -71,7 +70,7 @@ const RoutineForm = ({ editing }) => {
               ))}
             <Row>
               <Column size="1">
-                <TimeSelector />
+                <TimeInput />
               </Column>
               <Column size="12">
                 <Input
@@ -85,12 +84,12 @@ const RoutineForm = ({ editing }) => {
 
             <Row mTop>
               <Column lg={6}>
-                <Button type="danger" block>
+                <Button type="danger" icon="fas fa-ban" block>
                   Cancel
                 </Button>
               </Column>
               <Column lg={6}>
-                <Button type="success" block>
+                <Button type="success" icon="fas fa-save" block>
                   Submit
                 </Button>
               </Column>
