@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { inputStyles } from "./Input";
-import { toTimeString } from "../../utilities";
+import { toTimeString } from "../../base/utilities";
 
 const TimeInput = () => {
   const [seconds] = useState(0);

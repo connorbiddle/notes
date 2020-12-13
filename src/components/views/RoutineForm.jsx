@@ -1,96 +1,111 @@
 import React, { useState, useContext } from "react";
+import { Column, Row } from "../presentational/Grid";
+import Card from "../presentational/Card";
 import Input from "../utilities/Input";
 import TimeInput from "../utilities/TimeInput";
-import Card from "../presentational/Card";
-import { Column, Row } from "../presentational/Grid";
-import { RoutinesContext } from "../../RoutinesContext";
-import { v4 as uuid } from "uuid";
 import Button from "../utilities/Button";
+import { RoutinesContext } from "../../base/RoutinesContext";
+import { v4 as uuid } from "uuid";
+import { Redirect } from "react-router-dom";
 
 const RoutineForm = ({ editing }) => {
-  const [routines] = useContext(RoutinesContext);
+  const [routines, setRoutines] = useContext(RoutinesContext);
 
-  const [routine, setRoutine] = useState({
-    id: editing ? routines[editing].id : uuid(),
-    title: editing ? routines[editing].title : "",
-    tasks: editing ? routines[editing].tasks : [],
-  });
+  const [redirect, setRedirect] = useState(null);
+  const [currentRoutine, setCurrentRoutine] = useState(
+    editing
+      ? {
+          ...routines.find(routine => routine.id === parseInt(editing)),
+          // Array copy required to avoid direct reference to array in context
+          tasks: [
+            ...routines.find(routine => routine.id === parseInt(editing)).tasks,
+          ],
+        }
+      : { id: uuid(), title: "", tasks: [] }
+  );
 
-  const [newTask, setNewTask] = useState("");
-
-  const handleTitleChange = e =>
-    setRoutine(oldRoutine => ({ ...oldRoutine, title: e.target.value }));
-
-  const handleTaskChange = e =>
-    setRoutine(oldRoutine => {
-      const taskToChange = oldRoutine.tasks.findIndex(
-        task => task.id === parseInt(e.target.name)
-      );
-
-      const newTasks = [...oldRoutine.tasks];
-      newTasks[taskToChange].name = e.target.value;
-
-      const newRoutine = { ...oldRoutine, tasks: newTasks };
-
-      return newRoutine;
-    });
-
-  const handleNewTaskChange = e => setNewTask(e.target.value);
-
-  const handleSubmit = () => {
-    console.log("Form submitted.");
+  const onTitleChange = e => {
+    setCurrentRoutine(oldRoutine => ({
+      ...oldRoutine,
+      title: e.target.value,
+    }));
   };
 
-  return (
+  const onTaskChange = (e, id) => {
+    const editedTaskIndex = currentRoutine.tasks.findIndex(
+      task => task.id === id
+    );
+
+    setCurrentRoutine(oldRoutine => {
+      const newRoutine = oldRoutine;
+      const oldTask = oldRoutine.tasks[editedTaskIndex];
+      newRoutine.tasks[editedTaskIndex] = { ...oldTask, name: e.target.value };
+      return newRoutine;
+    });
+  };
+
+  const onFormSubmit = e => {
+    // TO ADD: Handling of new routine creation
+    e.preventDefault();
+
+    const editedRoutineIndex = routines.findIndex(
+      routine => routine.id === parseInt(editing)
+    );
+
+    const newRoutines = routines;
+    newRoutines[editedRoutineIndex] = currentRoutine;
+
+    setRoutines(newRoutines);
+    sendHome();
+  };
+
+  const sendHome = () => setRedirect(<Redirect to="/" />);
+
+  return redirect ? (
+    redirect
+  ) : (
     <Row>
       <Column size={12} lg={8}>
         <Card fadeIn>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={onFormSubmit}>
             <Input
-              name="title"
-              value={routine.title}
-              onChange={handleTitleChange}
-              placeholder={"Routine Title"}
+              value={editing ? currentRoutine.title : ""}
               large
+              onChange={onTitleChange}
+              placeholder="Routine Title"
             />
-            {editing &&
-              routine.tasks.map(task => (
+            {currentRoutine.tasks.length > 0 &&
+              currentRoutine.tasks.map(task => (
                 <Row key={task.id}>
                   <Column size="1">
                     <TimeInput />
                   </Column>
-                  <Column size="12">
+                  <Column size="11">
                     <Input
-                      name={task.id}
+                      onChange={e => onTaskChange(e, task.id)}
                       value={task.name}
-                      onChange={handleTaskChange}
                     />
                   </Column>
                 </Row>
               ))}
-            <Row>
-              <Column size="1">
-                <TimeInput />
-              </Column>
-              <Column size="12">
-                <Input
-                  name={uuid()}
-                  value={newTask}
-                  onChange={handleNewTaskChange}
-                  placeholder="New task..."
-                />
-              </Column>
-            </Row>
+
+            {/* TO ADD: Input for NEW task. */}
 
             <Row mTop>
               <Column lg={6}>
-                <Button type="danger" icon="fas fa-ban" block>
+                <Button
+                  block
+                  type="button"
+                  onClick={sendHome}
+                  color="danger"
+                  icon="fa fa-times"
+                >
                   Cancel
                 </Button>
               </Column>
               <Column lg={6}>
-                <Button type="success" icon="fas fa-save" block>
-                  Submit
+                <Button block type="submit" color="primary" icon="fa fa-save">
+                  Save
                 </Button>
               </Column>
             </Row>

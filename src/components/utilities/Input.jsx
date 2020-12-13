@@ -1,12 +1,20 @@
 import React from "react";
 import styled, { css } from "styled-components";
+import useInputState from "../../hooks/useInputState";
 
 const Input = ({ name, value, onChange, placeholder, large }) => {
+  const [inputValue, setInputValue] = useInputState(value || "");
+
+  const onInputChange = e => {
+    if (onChange) onChange(e);
+    setInputValue(e);
+  };
+
   return (
     <StyledInput
       name={name}
-      value={value}
-      onChange={onChange}
+      value={inputValue}
+      onChange={onInputChange}
       placeholder={placeholder}
       large={large}
     />

@@ -2,9 +2,9 @@ import { darken } from "polished";
 import React from "react";
 import styled from "styled-components";
 
-const Button = ({ children, onClick, icon, block, type }) => {
+const Button = ({ children, onClick, icon, block, type, color }) => {
   return (
-    <StyledButton onClick={onClick} block={block} type={type}>
+    <StyledButton onClick={onClick} block={block} type={type} color={color}>
       {children} {icon && <i className={icon} />}
     </StyledButton>
   );
@@ -16,8 +16,8 @@ const StyledButton = styled.button`
 
   cursor: pointer;
   color: ${({ theme }) => theme.colors.light};
-  background: ${({ theme, type }) =>
-    theme.colors[type] || theme.colors.primary};
+  background: ${({ theme, color }) =>
+    theme.colors[color] || theme.colors.primary};
   border-radius: 10px;
   font-family: inherit;
   font-size: 1rem;
@@ -30,8 +30,8 @@ const StyledButton = styled.button`
   text-decoration: none;
 
   &:hover {
-    background: ${({ theme, type }) =>
-      darken(0.075, theme.colors[type] || theme.colors.primary)};
+    background: ${({ theme, color }) =>
+      darken(0.075, theme.colors[color] || theme.colors.primary)};
   }
 
   i {

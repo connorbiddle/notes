@@ -72,12 +72,12 @@ const placeholderRoutines = [
 
 export const RoutinesProvider = ({ children }) => {
   const [routines, setRoutineState] = useState(
-    localStorage.getItem(LS_KEY) || placeholderRoutines
+    JSON.parse(localStorage.getItem(LS_KEY)) || placeholderRoutines
   );
 
   const setRoutines = newRoutineList => {
     setRoutineState(newRoutineList);
-    localStorage.setItem(JSON.stringify(newRoutineList));
+    localStorage.setItem(LS_KEY, JSON.stringify(newRoutineList));
   };
 
   return (

@@ -3,7 +3,7 @@ import Card from "../presentational/Card";
 import { Title } from "../presentational/Typography";
 import { List, ListItem } from "../presentational/List";
 import { SmallText } from "../presentational/Typography";
-import { RoutinesContext } from "../../RoutinesContext";
+import { RoutinesContext } from "../../base/RoutinesContext";
 import Button from "../utilities/Button";
 import { Link } from "react-router-dom";
 
@@ -32,7 +32,7 @@ const RoutineList = ({ setRoutine, activeRoutine }) => {
         )}
       </List>
       <Link to="/new">
-        <Button block type="success" icon="fas fa-plus">
+        <Button block color="success" icon="fas fa-plus">
           New Routine
         </Button>
       </Link>
