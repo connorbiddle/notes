@@ -28,7 +28,7 @@ const theme = {
         transform: translateY(10px);
       }
 
-      15% {
+      20% {
         opacity: 0;
         transform: translateY(10px);
       }

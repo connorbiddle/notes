@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import { Redirect } from "react-router-dom";
 import { Column, Row } from "../presentational/Grid";
 import Card from "../presentational/Card";
 import Input from "../utilities/Input";
@@ -6,12 +7,12 @@ import TimeInput from "../utilities/TimeInput";
 import Button from "../utilities/Button";
 import { RoutinesContext } from "../../base/RoutinesContext";
 import { v4 as uuid } from "uuid";
-import { Redirect } from "react-router-dom";
 
 const RoutineForm = ({ editing }) => {
   const [routines, setRoutines] = useContext(RoutinesContext);
-
   const [redirect, setRedirect] = useState(null);
+  const [newTask, setNewTask] = useState({ name: "", duration: 0 });
+
   const [currentRoutine, setCurrentRoutine] = useState(
     editing
       ? {
@@ -44,6 +45,10 @@ const RoutineForm = ({ editing }) => {
     });
   };
 
+  const onNewTaskChange = e => {
+    setNewTask(oldTask => ({ ...oldTask, name: e.target.value }));
+  };
+
   const onFormSubmit = e => {
     // TO ADD: Handling of new routine creation
     e.preventDefault();
@@ -57,6 +62,22 @@ const RoutineForm = ({ editing }) => {
 
     setRoutines(newRoutines);
     sendHome();
+  };
+
+  const submitNewTask = e => {
+    if (e.keyCode !== 13) return;
+
+    const taskToAdd = { id: uuid(), ...newTask };
+    setNewTask({ name: "", duration: 0 });
+
+    setCurrentRoutine(oldRoutine => {
+      const newTasks = [...oldRoutine.tasks];
+      newTasks.push(taskToAdd);
+      return { ...oldRoutine, tasks: newTasks };
+    });
+    console.log(newTask);
+
+    e.preventDefault();
   };
 
   const sendHome = () => setRedirect(<Redirect to="/" />);
@@ -89,7 +110,19 @@ const RoutineForm = ({ editing }) => {
                 </Row>
               ))}
 
-            {/* TO ADD: Input for NEW task. */}
+            <Row>
+              <Column size="1">
+                <TimeInput />
+              </Column>
+              <Column size="11">
+                <Input
+                  value={newTask.name}
+                  placeholder="New task"
+                  onChange={onNewTaskChange}
+                  onKeyDown={submitNewTask}
+                />
+              </Column>
+            </Row>
 
             <Row mTop>
               <Column lg={6}>
@@ -104,7 +137,7 @@ const RoutineForm = ({ editing }) => {
                 </Button>
               </Column>
               <Column lg={6}>
-                <Button block type="submit" color="primary" icon="fa fa-save">
+                <Button block type="submit" color="success" icon="fa fa-save">
                   Save
                 </Button>
               </Column>

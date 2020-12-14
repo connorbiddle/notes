@@ -14,7 +14,7 @@ const Card = styled.div`
   ${({ theme, fadeIn }) =>
     fadeIn &&
     css`
-      animation: 800ms ${theme.animations.fadeIn} ease;
+      animation: 1s ${theme.animations.fadeIn} ease;
     `}
 `;
 

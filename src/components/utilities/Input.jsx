@@ -1,22 +1,24 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
-import useInputState from "../../hooks/useInputState";
 
-const Input = ({ name, value, onChange, placeholder, large }) => {
-  const [inputValue, setInputValue] = useInputState(value || "");
+const Input = ({ name, value, placeholder, large, onChange, onKeyDown }) => {
+  const [inputValue, setInputValue] = useState(value || "");
+
+  useEffect(() => setInputValue(value), [value]);
 
   const onInputChange = e => {
     if (onChange) onChange(e);
-    setInputValue(e);
+    setInputValue(e.target.value);
   };
 
   return (
     <StyledInput
       name={name}
       value={inputValue}
-      onChange={onInputChange}
       placeholder={placeholder}
       large={large}
+      onChange={onInputChange}
+      onKeyDown={onKeyDown}
     />
   );
 };
