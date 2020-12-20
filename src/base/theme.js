@@ -4,7 +4,8 @@ const theme = {
   spacing: {
     sm: "0.65rem",
     md: "1rem",
-    lg: "2rem",
+    lg: "1.5rem",
+    xl: "2rem",
   },
   colors: {
     primary: "#403380",
@@ -36,6 +37,23 @@ const theme = {
       100% {
         opacity: 1;
         transform: translateY(0);
+      }
+    `,
+    // fadeInAlt is for elements already translated (-50%, -50%).
+    fadeInAlt: keyframes`
+      0% {
+        opacity: 0;
+        transform: translate(-50%, calc(-50% + 10px));
+      }
+
+      20% {
+        opacity: 0;
+        transform: translate(-50%, calc(-50% + 10px));
+      }
+
+      100% {
+        opacity: 1;
+        transform: translate(-50%, -50%);
       }
     `,
   },

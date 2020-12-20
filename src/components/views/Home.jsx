@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { Column, Row } from "../presentational/Grid";
 import ActiveRoutine from "../parts/ActiveRoutine";
 import RoutineList from "../parts/RoutineList";
+import GetStarted from "../parts/GetStarted";
 import { RoutinesContext } from "../../base/RoutinesContext";
 
 const Home = () => {
@@ -9,11 +10,10 @@ const Home = () => {
 
   const [activeRoutine, setActiveRoutine] = useState(routines[0]);
 
-  const setRoutineById = id => {
-    setActiveRoutine(routines[id]);
-  };
+  const setRoutineById = id =>
+    setActiveRoutine(routines.find(routine => routine.id === id));
 
-  return (
+  return routines.length > 0 ? (
     <section>
       <Row>
         <Column lg={8}>
@@ -27,6 +27,8 @@ const Home = () => {
         </Column>
       </Row>
     </section>
+  ) : (
+    <GetStarted />
   );
 };
 

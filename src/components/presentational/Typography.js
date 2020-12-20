@@ -1,15 +1,31 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
+
+// Shared styles extend prop usage to all typography components.
+const SHARED_STYLES = css`
+  text-align: ${({ textAlign }) => textAlign && textAlign} !important;
+  color: ${({ theme, light }) =>
+    light ? theme.colors.light : theme.colors.dark} !important;
+
+  margin-bottom: ${({ theme, mBot }) => {
+    switch (mBot) {
+      case 2:
+        return theme.spacing.md;
+      case 3:
+        return theme.spacing.lg;
+      default:
+        return theme.spacing.sm;
+    }
+  }} !important;
+`;
 
 export const MainTitle = styled.h1`
-  color: ${({ theme }) => theme.colors.light};
   font-size: 2.625rem;
   font-weight: bold;
   margin-bottom: 0.2rem;
+  ${SHARED_STYLES}
 `;
 
 export const Title = styled.h2`
-  margin-bottom: ${({ theme, mbot }) => mbot || theme.spacing.sm};
-  text-align: ${({ textAlign }) => textAlign && textAlign};
   font-size: 1.5rem;
   font-weight: bold;
 
@@ -23,12 +39,11 @@ export const Title = styled.h2`
       text-align: center;
       @media (min-width: ${theme.sizes.lg}) { text-align: left; }
     `}
+
+  ${SHARED_STYLES}
 `;
 
 export const SmallText = styled.div`
-  color: ${({ theme, light }) =>
-    light ? theme.colors.light : theme.colors.dark};
-  text-align: ${({ textAlign }) => textAlign && textAlign};
   font-size: 1.125rem;
   font-weight: normal;
   line-height: 1.5;
@@ -36,6 +51,8 @@ export const SmallText = styled.div`
   a {
     text-decoration: underline;
   }
+
+  ${SHARED_STYLES}
 `;
 
 export const Muted = styled.span`

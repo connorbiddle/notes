@@ -36,7 +36,10 @@ const ActiveRoutine = ({ routine }) => {
     </Card>
   ) : (
     <Card fadeIn>
-      <SmallText>Nuffin there!</SmallText>
+      <Title textAlign="center">No routines saved.</Title>
+      <SmallText textAlign="center">
+        <Link to="new">Create one</Link> and get practicing!
+      </SmallText>
     </Card>
   );
 };

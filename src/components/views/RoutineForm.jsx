@@ -16,11 +16,9 @@ const RoutineForm = ({ editing }) => {
   const [currentRoutine, setCurrentRoutine] = useState(
     editing
       ? {
-          ...routines.find(routine => routine.id === parseInt(editing)),
+          ...routines.find(routine => routine.id === editing),
           // Array copy required to avoid direct reference to array in context
-          tasks: [
-            ...routines.find(routine => routine.id === parseInt(editing)).tasks,
-          ],
+          tasks: [...routines.find(routine => routine.id === editing).tasks],
         }
       : { id: uuid(), title: "", tasks: [] }
   );
@@ -50,15 +48,18 @@ const RoutineForm = ({ editing }) => {
   };
 
   const onFormSubmit = e => {
-    // TO ADD: Handling of new routine creation
     e.preventDefault();
 
     const editedRoutineIndex = routines.findIndex(
-      routine => routine.id === parseInt(editing)
+      routine => routine.id === editing
     );
 
     const newRoutines = routines;
-    newRoutines[editedRoutineIndex] = currentRoutine;
+    if (editedRoutineIndex !== -1) {
+      newRoutines[editedRoutineIndex] = currentRoutine; // Edit selected routine
+    } else {
+      newRoutines.push(currentRoutine); // Add new routine
+    }
 
     setRoutines(newRoutines);
     sendHome();
@@ -80,10 +81,16 @@ const RoutineForm = ({ editing }) => {
     e.preventDefault();
   };
 
-  const sendHome = () => setRedirect(<Redirect to="/" />);
+  const focusInputAfterTitle = e => {
+    if (e.keyCode !== 13) return;
+    e.target.form[1].focus();
+    e.preventDefault();
+  };
+
+  const sendHome = () => setRedirect("/");
 
   return redirect ? (
-    redirect
+    <Redirect to={redirect} />
   ) : (
     <Row>
       <Column size={12} lg={8}>
@@ -93,6 +100,7 @@ const RoutineForm = ({ editing }) => {
               value={editing ? currentRoutine.title : ""}
               large
               onChange={onTitleChange}
+              onKeyDown={focusInputAfterTitle}
               placeholder="Routine Title"
             />
             {currentRoutine.tasks.length > 0 &&

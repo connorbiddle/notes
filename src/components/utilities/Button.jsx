@@ -1,23 +1,26 @@
 import { darken } from "polished";
 import React from "react";
 import styled from "styled-components";
+import Flex from "../presentational/Flex";
 
-const Button = ({ children, onClick, icon, block, type, color }) => {
-  return (
+const Button = ({ children, onClick, icon, block, type, color, center }) => {
+  const button = (
     <StyledButton onClick={onClick} block={block} type={type} color={color}>
       {children} {icon && <i className={icon} />}
     </StyledButton>
   );
+
+  return center ? <Flex justifyContent="center">{button}</Flex> : button;
 };
 
 const StyledButton = styled.button`
   width: ${({ block }) => (block ? "100%" : "unset")};
   display: ${({ block }) => (block ? "block" : "inline-block")};
-
-  cursor: pointer;
   color: ${({ theme }) => theme.colors.light};
   background: ${({ theme, color }) =>
     theme.colors[color] || theme.colors.primary};
+
+  cursor: pointer;
   border-radius: 10px;
   font-family: inherit;
   font-size: 1rem;
@@ -28,6 +31,7 @@ const StyledButton = styled.button`
   border: none;
   transition: background 250ms ease-out;
   text-decoration: none;
+  line-height: 1.25;
 
   &:hover {
     background: ${({ theme, color }) =>
