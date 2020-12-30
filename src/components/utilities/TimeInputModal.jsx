@@ -15,31 +15,38 @@ const TimeInputModal = ({ condition, close, seconds }) => {
 
   return (
     <Modal condition={condition} close={close}>
-      <Flex alignItems="center" justifyContent="center">
-        <CustomInput
-          value={mins}
-          onChange={changeMins}
-          // numbersOnly
-        />
-        <Separator>:</Separator>
-        <CustomInput
-          value={secs}
-          onChange={changeSecs}
-          // numbersOnly
-        />
+      <Flex flexDirection="column" height="100%" justifyContent="space-between">
+        <Flex
+          alignItems="center"
+          justifyContent="center"
+          alignSelf="center"
+          height="100%"
+        >
+          <CustomInput
+            value={mins}
+            onChange={changeMins}
+            // numbersOnly
+          />
+          <Separator>:</Separator>
+          <CustomInput
+            value={secs}
+            onChange={changeSecs}
+            // numbersOnly
+          />
+        </Flex>
+        <Row>
+          <Column size={6}>
+            <Button color="danger" icon="fas fa-times" block type="button">
+              Cancel
+            </Button>
+          </Column>
+          <Column size={6}>
+            <Button color="success" icon="fas fa-check" block type="button">
+              Confirm
+            </Button>
+          </Column>
+        </Row>
       </Flex>
-      <Row>
-        <Column size={6}>
-          <Button color="danger" icon="fas fa-times" block type="button">
-            Cancel
-          </Button>
-        </Column>
-        <Column size={6}>
-          <Button color="success" icon="fas fa-check" block type="button">
-            Confirm
-          </Button>
-        </Column>
-      </Row>
     </Modal>
   );
 };

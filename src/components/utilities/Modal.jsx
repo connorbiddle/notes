@@ -33,8 +33,8 @@ const StyledModal = styled.section`
 
 const StyledCard = styled(Card)`
   position: relative;
-  width: 500px;
-  height: 400px;
+  width: 450px;
+  height: 325px;
   max-width: 90%;
   max-height: 90%;
 `;
