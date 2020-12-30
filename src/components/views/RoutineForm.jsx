@@ -120,7 +120,10 @@ const RoutineForm = ({ editing }) => {
 
             <Row>
               <Column size="1">
-                <TimeInput />
+                <TimeInput
+                  value={newTask.duration}
+                  // This will have 'onChange' and 'onSubmit', similar to the below regular input's events.
+                />
               </Column>
               <Column size="11">
                 <Input

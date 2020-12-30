@@ -12,6 +12,8 @@ const SHARED_STYLES = css`
         return theme.spacing.md;
       case 3:
         return theme.spacing.lg;
+      case 4:
+        return theme.spacing.xl;
       default:
         return theme.spacing.sm;
     }

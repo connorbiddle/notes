@@ -7,15 +7,15 @@ import Button from "../utilities/Button";
 const GetStarted = () => {
   return (
     <StyledGetStarted>
-      <MainTitle textAlign="center" light mBot={1}>
+      <MainTitle textAlign="center" light mBot={3}>
         Welcome to Notes!
       </MainTitle>
-      <Title textAlign="center" light mBot={3}>
-        Looks like you've got no routines saved yet.
+      <Title textAlign="center" light mBot={4}>
+        Looks like you've got nothing saved yet.
       </Title>
       <Link to="/new">
         <Button color="success" icon="fas fa-caret-right" center>
-          Get Started
+          Create Routine
         </Button>
       </Link>
     </StyledGetStarted>

@@ -2,11 +2,27 @@ import { useState } from "react";
 import styled from "styled-components";
 import { inputStyles } from "./Input";
 import { toTimeString } from "../../base/utilities";
+import TimeInputModal from "./TimeInputModal";
 
-const TimeInput = () => {
-  const [seconds] = useState(0);
+const TimeInput = ({ value }) => {
+  const [seconds] = useState(value || 0);
+  const [modalActive, setModalActive] = useState(false);
 
-  return <StyledTimeInput>{toTimeString(seconds)}</StyledTimeInput>;
+  const openModal = () => setModalActive(true);
+  const closeModal = () => setModalActive(false);
+
+  return (
+    <>
+      <StyledTimeInput onClick={openModal}>
+        {toTimeString(seconds)}
+      </StyledTimeInput>
+      <TimeInputModal
+        condition={modalActive}
+        close={closeModal}
+        seconds={seconds}
+      />
+    </>
+  );
 };
 
 const StyledTimeInput = styled.div`
