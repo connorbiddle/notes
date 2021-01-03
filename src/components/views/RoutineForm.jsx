@@ -43,8 +43,29 @@ const RoutineForm = ({ editing }) => {
     });
   };
 
+  const onTaskTimeChange = (value, id) => {
+    const editedTaskIndex = currentRoutine.tasks.findIndex(
+      task => task.id === id
+    );
+
+    setCurrentRoutine(oldRoutine => {
+      const newRoutine = { ...oldRoutine };
+      const oldTask = oldRoutine.tasks[editedTaskIndex];
+
+      newRoutine.tasks[editedTaskIndex] = {
+        ...oldTask,
+        duration: value,
+      };
+      return newRoutine;
+    });
+  };
+
   const onNewTaskChange = e => {
     setNewTask(oldTask => ({ ...oldTask, name: e.target.value }));
+  };
+
+  const onNewTaskTimeChange = value => {
+    setNewTask(oldTask => ({ ...oldTask, duration: value }));
   };
 
   const onFormSubmit = e => {
@@ -107,12 +128,15 @@ const RoutineForm = ({ editing }) => {
               currentRoutine.tasks.map(task => (
                 <Row key={task.id}>
                   <Column size="1">
-                    <TimeInput />
+                    <TimeInput
+                      value={task.duration}
+                      onChange={value => onTaskTimeChange(value, task.id)}
+                    />
                   </Column>
                   <Column size="11">
                     <Input
-                      onChange={e => onTaskChange(e, task.id)}
                       value={task.name}
+                      onChange={e => onTaskChange(e, task.id)}
                     />
                   </Column>
                 </Row>
@@ -122,7 +146,7 @@ const RoutineForm = ({ editing }) => {
               <Column size="1">
                 <TimeInput
                   value={newTask.duration}
-                  // This will have 'onChange' and 'onSubmit', similar to the below regular input's events.
+                  onChange={onNewTaskTimeChange}
                 />
               </Column>
               <Column size="11">

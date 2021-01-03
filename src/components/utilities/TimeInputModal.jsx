@@ -6,9 +6,11 @@ import Modal from "./Modal";
 import Button from "./Button";
 import { inputStyles } from "./Input";
 
-const TimeInputModal = ({ condition, close, seconds }) => {
+const TimeInputModal = ({ condition, close, seconds, onChange }) => {
+  const paddedSecs = seconds % 60 < 10 ? `0${seconds % 60}` : null;
+
   const [mins, setMins] = useState(Math.floor(seconds / 60));
-  const [secs, setSecs] = useState(seconds % 60);
+  const [secs, setSecs] = useState(paddedSecs || seconds % 60);
 
   const changeMins = e => {
     if (isInvalidChange(e, "mins")) return;
@@ -38,12 +40,22 @@ const TimeInputModal = ({ condition, close, seconds }) => {
       return true;
   };
 
+  const handleEnter = e => {
+    if (e.keyCode === 13) onSubmit();
+  };
+
   const onSubmit = e => {
-    e.preventDefault();
+    if (e) e.preventDefault();
     const [min, sec] = [parseInt(mins), parseInt(secs)];
+
+    if (isNaN(min) || isNaN(sec)) {
+      console.log("Values rejected!");
+      return;
+    }
+
     const totalSeconds = min * 60 + sec;
-    console.log(`Formatted time: ${min}:${sec}`);
-    console.log(`Time in seconds: ${totalSeconds}\n`);
+    onChange(totalSeconds);
+    close();
   };
 
   return (
@@ -55,9 +67,19 @@ const TimeInputModal = ({ condition, close, seconds }) => {
           alignSelf="center"
           height="100%"
         >
-          <CustomInput value={mins} onChange={changeMins} placeholder="M" />
+          <CustomInput
+            value={mins}
+            onChange={changeMins}
+            onKeyDown={handleEnter}
+            placeholder="M"
+          />
           <Separator>:</Separator>
-          <CustomInput value={secs} onChange={changeSecs} placeholder="S" />
+          <CustomInput
+            value={secs}
+            onChange={changeSecs}
+            onKeyDown={handleEnter}
+            placeholder="S"
+          />
         </Flex>
         <Row>
           <Column size={6}>
