@@ -5,6 +5,7 @@ import { Row, Column } from "../presentational/Grid";
 import Modal from "./Modal";
 import Button from "./Button";
 import { inputStyles } from "./Input";
+import { isInvalidTimeChange } from "../../base/utilities";
 
 const TimeInputModal = ({ condition, close, seconds, onChange }) => {
   const paddedSecs = seconds % 60 < 10 ? `0${seconds % 60}` : null;
@@ -13,31 +14,13 @@ const TimeInputModal = ({ condition, close, seconds, onChange }) => {
   const [secs, setSecs] = useState(paddedSecs || seconds % 60);
 
   const changeMins = e => {
-    if (isInvalidChange(e, "mins")) return;
+    if (isInvalidTimeChange(e, "mins")) return;
     setMins(e.target.value);
   };
 
   const changeSecs = e => {
-    if (isInvalidChange(e, "secs")) return;
+    if (isInvalidTimeChange(e, "secs")) return;
     setSecs(e.target.value);
-  };
-
-  const isInvalidChange = (e, type) => {
-    if (type === "mins" && e.target.value.length > 3) return true;
-    if (
-      type === "secs" &&
-      (e.target.value.length > 2 || parseInt(e.target.value) > 59)
-    )
-      return true;
-
-    if (
-      isNaN(parseInt(e.nativeEvent.data)) &&
-      e.nativeEvent.inputType !== "deleteContentBackward" &&
-      e.nativeEvent.inputType !== "deleteContentBackward" &&
-      e.nativeEvent.inputType !== "deleteWordBackward" &&
-      e.nativeEvent.inputType !== "deleteWordForward"
-    )
-      return true;
   };
 
   const handleEnter = e => {
@@ -58,8 +41,14 @@ const TimeInputModal = ({ condition, close, seconds, onChange }) => {
     close();
   };
 
+  const closeTimeModal = () => {
+    setMins(Math.floor(seconds / 60));
+    setSecs(paddedSecs || seconds % 60);
+    close();
+  };
+
   return (
-    <Modal condition={condition} close={close}>
+    <Modal condition={condition} close={closeTimeModal}>
       <Flex flexDirection="column" height="100%" justifyContent="space-between">
         <Flex
           alignItems="center"
@@ -83,7 +72,13 @@ const TimeInputModal = ({ condition, close, seconds, onChange }) => {
         </Flex>
         <Row>
           <Column size={6}>
-            <Button color="danger" icon="fas fa-times" block type="button">
+            <Button
+              color="danger"
+              icon="fas fa-times"
+              block
+              type="button"
+              onClick={closeTimeModal}
+            >
               Cancel
             </Button>
           </Column>

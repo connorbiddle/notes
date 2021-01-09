@@ -46,7 +46,7 @@ const CloseButton = styled.button`
   background: none;
   border: none;
   top: 0.85rem;
-  right: 1rem;
+  right: 1.15rem;
 
   opacity: 0.5;
   transition: opacity 0.3s ease-out;
