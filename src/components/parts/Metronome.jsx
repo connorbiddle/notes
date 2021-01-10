@@ -8,7 +8,7 @@ import { Row, Column } from "../presentational/Grid";
 const Metronome = () => {
   // const [playing, setPlaying] = useState(false);
   // const [visible, setVisible] = useState(false);
-  const [bpm, setBpm] = useState(80);
+  const [bpm] = useState(80);
 
   return (
     <StyledMetronome>
