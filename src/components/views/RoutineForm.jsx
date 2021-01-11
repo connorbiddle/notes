@@ -2,16 +2,17 @@ import React, { useState, useContext } from "react";
 import { Redirect } from "react-router-dom";
 import { Column, Row } from "../presentational/Grid";
 import Card from "../presentational/Card";
+import Flex from "../presentational/Flex";
 import Input from "../utilities/Input";
 import TimeInput from "../utilities/TimeInput";
 import Button from "../utilities/Button";
+import IconButton from "../utilities/IconButton";
 import { RoutinesContext } from "../../base/RoutinesContext";
 import { v4 as uuid } from "uuid";
 
 const RoutineForm = ({ editing }) => {
   const [routines, setRoutines] = useContext(RoutinesContext);
   const [redirect, setRedirect] = useState(null);
-  const [newTask, setNewTask] = useState({ name: "", duration: 0 });
 
   const [currentRoutine, setCurrentRoutine] = useState(
     editing
@@ -19,7 +20,11 @@ const RoutineForm = ({ editing }) => {
           ...routines.find(routine => routine.id === editing),
           tasks: [...routines.find(routine => routine.id === editing).tasks],
         }
-      : { id: uuid(), title: "", tasks: [] }
+      : {
+          id: uuid(),
+          title: "",
+          tasks: [{ id: uuid(), name: "", duration: 0 }],
+        }
   );
 
   const onTitleChange = e => {
@@ -41,9 +46,17 @@ const RoutineForm = ({ editing }) => {
     });
   };
 
-  const onNewTaskChange = (value, property) => {
-    checkPropertyValidity(property);
-    setNewTask(oldTask => ({ ...oldTask, [property]: value }));
+  const addNewTask = () =>
+    setCurrentRoutine(oldRoutine => ({
+      ...oldRoutine,
+      tasks: [...oldRoutine.tasks, { id: uuid(), name: "", duration: 0 }],
+    }));
+
+  const deleteTask = id => {
+    const tasks = [...currentRoutine.tasks];
+    const nowDeleting = currentRoutine.tasks.findIndex(task => task.id === id);
+    tasks.splice(nowDeleting, 1);
+    setCurrentRoutine(oldRoutine => ({ ...oldRoutine, tasks }));
   };
 
   const checkPropertyValidity = property => {
@@ -67,21 +80,6 @@ const RoutineForm = ({ editing }) => {
 
     setRoutines(newRoutines);
     sendHome();
-  };
-
-  const submitNewTask = e => {
-    if (e.keyCode !== 13) return;
-
-    const taskToAdd = { id: uuid(), ...newTask };
-    setNewTask({ name: "", duration: 0 });
-
-    setCurrentRoutine(oldRoutine => {
-      const newTasks = [...oldRoutine.tasks];
-      newTasks.push(taskToAdd);
-      return { ...oldRoutine, tasks: newTasks };
-    });
-
-    e.preventDefault();
   };
 
   const focusInputAfterTitle = e => {
@@ -117,33 +115,37 @@ const RoutineForm = ({ editing }) => {
                       }
                     />
                   </Column>
-                  <Column size="11">
+                  <Column size="10">
                     <Input
+                      placeholder="Task name"
                       value={task.name}
                       onChange={e =>
                         onTaskChange(e.target.value, task.id, "name")
                       }
                     />
                   </Column>
+                  <Column size="1">
+                    <Flex alignItems="center" height="65%">
+                      <IconButton
+                        type="button"
+                        onClick={() => deleteTask(task.id)}
+                        icon="fas fa-trash"
+                        color="danger"
+                      />
+                    </Flex>
+                  </Column>
                 </Row>
               ))}
 
-            <Row>
-              <Column size="1">
-                <TimeInput
-                  value={newTask.duration}
-                  onChange={value => onNewTaskChange(value, "duration")}
-                />
-              </Column>
-              <Column size="11">
-                <Input
-                  value={newTask.name}
-                  placeholder="New task"
-                  onChange={e => onNewTaskChange(e.target.value, "name")}
-                  onKeyDown={submitNewTask}
-                />
-              </Column>
-            </Row>
+            <Flex justifyContent="center">
+              <IconButton
+                type="button"
+                onClick={addNewTask}
+                icon="fas fa-plus"
+                color="success"
+                margin
+              />
+            </Flex>
 
             <Row mTop>
               <Column lg={6}>
