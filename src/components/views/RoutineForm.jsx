@@ -14,18 +14,25 @@ const RoutineForm = ({ editing }) => {
   const [routines, setRoutines] = useContext(RoutinesContext);
   const [redirect, setRedirect] = useState(null);
 
-  const [currentRoutine, setCurrentRoutine] = useState(
-    editing
-      ? {
-          ...routines.find(routine => routine.id === editing),
-          tasks: [...routines.find(routine => routine.id === editing).tasks],
-        }
-      : {
-          id: uuid(),
-          title: "",
-          tasks: [{ id: uuid(), name: "", duration: 0 }],
-        }
-  );
+  let routine;
+  const targetRoutine = routines.find(routine => routine.id === editing);
+
+  if (targetRoutine) {
+    routine = { ...targetRoutine };
+  } else {
+    routine = {
+      id: uuid(),
+      title: "",
+      tasks: [{ id: uuid(), name: "", duration: 0 }],
+    };
+  }
+
+  const [currentRoutine, setCurrentRoutine] = useState(routine);
+
+  const deleteRoutine = () => {
+    setRoutines(prev => prev.filter(routine => routine.id !== editing));
+    sendHome();
+  };
 
   const onTitleChange = e => {
     setCurrentRoutine(oldRoutine => ({
@@ -52,11 +59,12 @@ const RoutineForm = ({ editing }) => {
       tasks: [...oldRoutine.tasks, { id: uuid(), name: "", duration: 0 }],
     }));
 
+  // REMAKE FUNCTION WITH FILTER!
   const deleteTask = id => {
-    const tasks = [...currentRoutine.tasks];
-    const nowDeleting = currentRoutine.tasks.findIndex(task => task.id === id);
-    tasks.splice(nowDeleting, 1);
-    setCurrentRoutine(oldRoutine => ({ ...oldRoutine, tasks }));
+    setCurrentRoutine(oldRoutine => {
+      const tasks = oldRoutine.tasks.filter(task => task.id !== id);
+      return { ...oldRoutine, tasks };
+    });
   };
 
   const checkPropertyValidity = property => {
@@ -97,17 +105,34 @@ const RoutineForm = ({ editing }) => {
       <Column size={12} lg={8}>
         <Card fadeIn>
           <form onSubmit={onFormSubmit}>
-            <Input
-              value={editing ? currentRoutine.title : ""}
-              large
-              onChange={onTitleChange}
-              onKeyDown={focusInputAfterTitle}
-              placeholder="Routine Title"
-            />
+            <Row>
+              {editing && (
+                <Column size="1">
+                  <Flex alignItems="center" height="65%">
+                    <IconButton
+                      type="button"
+                      onClick={deleteRoutine}
+                      icon="fas fa-trash"
+                      color="danger"
+                      large
+                    />
+                  </Flex>
+                </Column>
+              )}
+              <Column size="22">
+                <Input
+                  value={editing ? currentRoutine.title : ""}
+                  large
+                  onChange={onTitleChange}
+                  onKeyDown={focusInputAfterTitle}
+                  placeholder="Routine Title"
+                />
+              </Column>
+            </Row>
             {currentRoutine.tasks.length > 0 &&
               currentRoutine.tasks.map(task => (
                 <Row key={task.id}>
-                  <Column size="1">
+                  <Column size="2">
                     <TimeInput
                       value={task.duration}
                       onChange={value =>
@@ -115,7 +140,7 @@ const RoutineForm = ({ editing }) => {
                       }
                     />
                   </Column>
-                  <Column size="10">
+                  <Column size="20">
                     <Input
                       placeholder="Task name"
                       value={task.name}
@@ -125,7 +150,11 @@ const RoutineForm = ({ editing }) => {
                     />
                   </Column>
                   <Column size="1">
-                    <Flex alignItems="center" height="65%">
+                    <Flex
+                      alignItems="center"
+                      justifyContent="flex-end"
+                      height="65%"
+                    >
                       <IconButton
                         type="button"
                         onClick={() => deleteTask(task.id)}
@@ -143,6 +172,7 @@ const RoutineForm = ({ editing }) => {
                 onClick={addNewTask}
                 icon="fas fa-plus"
                 color="success"
+                large
                 margin
               />
             </Flex>

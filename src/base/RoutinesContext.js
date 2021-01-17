@@ -76,8 +76,15 @@ export const RoutinesProvider = ({ children }) => {
   );
 
   const setRoutines = newRoutineList => {
-    setRoutineState(newRoutineList);
-    localStorage.setItem(LS_KEY, JSON.stringify(newRoutineList));
+    setRoutineState(prev => {
+      if (typeof newRoutineList === "function") {
+        localStorage.setItem(LS_KEY, JSON.stringify(newRoutineList(prev)));
+        return newRoutineList(prev);
+      } else {
+        localStorage.setItem(LS_KEY, JSON.stringify(newRoutineList));
+        return newRoutineList;
+      }
+    });
   };
 
   return (
