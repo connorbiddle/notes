@@ -3,7 +3,7 @@ import Card from "../presentational/Card";
 import { Title } from "../presentational/Typography";
 import { List, ListItem } from "../presentational/List";
 import { SmallText } from "../presentational/Typography";
-import { RoutinesContext } from "../../base/RoutinesContext";
+import { RoutinesContext } from "../../context/RoutinesContext";
 import Button from "../utilities/Button";
 import { Link } from "react-router-dom";
 

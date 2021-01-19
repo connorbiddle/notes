@@ -7,7 +7,7 @@ import Input from "../utilities/Input";
 import TimeInput from "../utilities/TimeInput";
 import Button from "../utilities/Button";
 import IconButton from "../utilities/IconButton";
-import { RoutinesContext } from "../../base/RoutinesContext";
+import { RoutinesContext } from "../../context/RoutinesContext";
 import { v4 as uuid } from "uuid";
 
 const RoutineForm = ({ editing }) => {
@@ -59,7 +59,6 @@ const RoutineForm = ({ editing }) => {
       tasks: [...oldRoutine.tasks, { id: uuid(), name: "", duration: 0 }],
     }));
 
-  // REMAKE FUNCTION WITH FILTER!
   const deleteTask = id => {
     setCurrentRoutine(oldRoutine => {
       const tasks = oldRoutine.tasks.filter(task => task.id !== id);

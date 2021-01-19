@@ -3,7 +3,7 @@ import { Column, Row } from "../presentational/Grid";
 import ActiveRoutine from "../parts/ActiveRoutine";
 import RoutineList from "../parts/RoutineList";
 import GetStarted from "../parts/GetStarted";
-import { RoutinesContext } from "../../base/RoutinesContext";
+import { RoutinesContext } from "../../context/RoutinesContext";
 
 const Home = () => {
   const [routines] = useContext(RoutinesContext);
