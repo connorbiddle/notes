@@ -8,11 +8,14 @@ import TimeInput from "../utilities/TimeInput";
 import Button from "../utilities/Button";
 import IconButton from "../utilities/IconButton";
 import { RoutinesContext } from "../../context/RoutinesContext";
+import { NotificationsContext } from "../../context/NotificationsContext";
 import { v4 as uuid } from "uuid";
 
 const RoutineForm = ({ editing }) => {
   const [routines, setRoutines] = useContext(RoutinesContext);
   const [redirect, setRedirect] = useState(null);
+
+  const { addNotification } = useContext(NotificationsContext);
 
   let routine;
   const targetRoutine = routines.find(routine => routine.id === editing);
@@ -31,6 +34,7 @@ const RoutineForm = ({ editing }) => {
 
   const deleteRoutine = () => {
     setRoutines(prev => prev.filter(routine => routine.id !== editing));
+    addNotification({ type: "success", message: "Routine deleted." });
     sendHome();
   };
 
@@ -71,12 +75,30 @@ const RoutineForm = ({ editing }) => {
       throw new Error('Property "name" or "duration" required.');
   };
 
+  const validateRoutine = routine => {
+    let error;
+
+    if (
+      currentRoutine.tasks.some(task => task.name.length < 1) ||
+      currentRoutine.title.length < 1
+    ) {
+      error = "Routine not saved! Some fields were left blank.";
+    }
+
+    return error;
+  };
+
   const onFormSubmit = e => {
     e.preventDefault();
 
     const nowEditing = routines.findIndex(routine => routine.id === editing);
+    const newRoutines = [...routines];
 
-    const newRoutines = routines;
+    const error = validateRoutine(currentRoutine);
+    if (error) {
+      addNotification({ message: error, type: "danger" });
+      return;
+    }
 
     // Modify existing routine, else create new one
     if (nowEditing !== -1) {
@@ -86,6 +108,7 @@ const RoutineForm = ({ editing }) => {
     }
 
     setRoutines(newRoutines);
+    addNotification({ message: "Routine saved.", type: "success" });
     sendHome();
   };
 

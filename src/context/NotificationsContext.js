@@ -1,40 +1,55 @@
-import React, { createContext } from "react";
+import React, { createContext, useReducer } from "react";
 import styled from "styled-components";
 import { v4 as uuid } from "uuid";
 import Notification from "../components/utilities/Notification";
 
-const NotificationsContext = createContext();
+export const NotificationsContext = createContext();
+
+const MAX_NOTIFICATIONS = 5;
 
 const NotificationsProvider = ({ children }) => {
-  // Implement reducer here.
+  const [state, dispatch] = useReducer((state, action) => {
+    switch (action.type) {
+      case "ADD_NOTIFICATION":
+        const newState = [...state];
+        if (newState.length >= MAX_NOTIFICATIONS) newState.shift();
+        newState.push({ ...action.payload });
+        return newState;
+      case "DELETE_NOTIFICATION":
+        return state.filter(notification => notification.id !== action.id);
+      default:
+        return state;
+    }
+  }, []);
 
-  const notifications = [
-    {
-      id: uuid(),
-      message: "This is a test success notification...",
-      type: "success",
-      duration: 3000,
-    },
-    {
-      id: uuid(),
-      message: "...this is a test danger notification...",
-      type: "danger",
-      duration: 5000,
-    },
-    {
-      id: uuid(),
-      message:
-        "...and this is a test info notification, which also happens to be really long.",
+  const addNotification = notification => {
+    const newNotification = {
       type: "primary",
       duration: 5000,
-    },
-  ];
+      id: uuid(),
+      ...notification,
+    };
+
+    dispatch({
+      type: "ADD_NOTIFICATION",
+      payload: newNotification,
+    });
+  };
+
+  const deleteNotification = id => {
+    dispatch({
+      type: "DELETE_NOTIFICATION",
+      id: id,
+    });
+  };
 
   return (
-    <NotificationsContext.Provider>
+    <NotificationsContext.Provider
+      value={{ addNotification, deleteNotification }}
+    >
       {children}
       <NotificationWrapper>
-        {notifications.map(notification => (
+        {state.map(notification => (
           <Notification key={notification.id} {...notification} />
         ))}
       </NotificationWrapper>

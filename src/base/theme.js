@@ -64,6 +64,14 @@ const theme = {
         opacity: 1;
       }
     `,
+    notification: keyframes`
+      0% {
+        transform: translateX(calc(100% + 1.5rem));
+      }
+      100% {
+        transform: translateX(0);
+      }
+    `,
   },
 };
 
