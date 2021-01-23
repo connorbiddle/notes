@@ -31,3 +31,9 @@ export const isInvalidTimeChange = (e, type) => {
   // nativeEvent returns appended character - not entire input value
   if (isNaN(parseInt(e.nativeEvent.data)) && !isDeleteEvent(e)) return true;
 };
+
+export const isInvalidMetronomeValue = value => {
+  console.log(value);
+  const tempo = parseInt(value);
+  return (value !== "" && isNaN(tempo)) || tempo < 0 || tempo > 500;
+};

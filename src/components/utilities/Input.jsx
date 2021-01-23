@@ -7,8 +7,14 @@ const Input = props => {
   useEffect(() => setInputValue(props.value), [props.value]);
 
   const onInputChange = e => {
-    if (props.onChange) props.onChange(e);
-    setInputValue(e.target.value);
+    let error;
+
+    // Return 'false' in passed onChange to cancel the change.
+    if (props.onChange) {
+      error = !props.onChange(e);
+    }
+
+    if (!error) setInputValue(e.target.value);
   };
 
   return (
