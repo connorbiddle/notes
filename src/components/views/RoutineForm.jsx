@@ -51,8 +51,10 @@ const RoutineForm = ({ editing }) => {
     const nowEditing = currentRoutine.tasks.findIndex(task => task.id === id);
 
     setCurrentRoutine(oldRoutine => {
-      const newRoutine = { ...oldRoutine };
-      newRoutine.tasks[nowEditing][property] = value;
+      const newRoutine = { ...oldRoutine, tasks: [...oldRoutine.tasks] };
+      const newTask = { ...newRoutine.tasks[nowEditing], [property]: value };
+
+      newRoutine.tasks.splice(nowEditing, 1, newTask);
       return newRoutine;
     });
   };
@@ -75,7 +77,7 @@ const RoutineForm = ({ editing }) => {
       throw new Error('Property "name" or "duration" required.');
   };
 
-  const validateRoutine = routine => {
+  const validateRoutine = () => {
     let error;
 
     if (
@@ -94,7 +96,7 @@ const RoutineForm = ({ editing }) => {
     const nowEditing = routines.findIndex(routine => routine.id === editing);
     const newRoutines = [...routines];
 
-    const error = validateRoutine(currentRoutine);
+    const error = validateRoutine();
     if (error) {
       addNotification({ message: error, type: "danger" });
       return;
