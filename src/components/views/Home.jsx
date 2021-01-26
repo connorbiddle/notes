@@ -4,11 +4,15 @@ import ActiveRoutine from "../parts/ActiveRoutine";
 import RoutineList from "../parts/RoutineList";
 import GetStarted from "../parts/GetStarted";
 import { RoutinesContext } from "../../context/RoutinesContext";
+import { useLocation } from "react-router-dom";
 
 const Home = () => {
-  const [routines] = useContext(RoutinesContext);
+  const location = useLocation();
 
-  const [activeRoutine, setActiveRoutine] = useState(routines[0]);
+  const [routines] = useContext(RoutinesContext);
+  const [activeRoutine, setActiveRoutine] = useState(
+    location.state ? location.state.routine : routines[0]
+  );
 
   const setRoutineById = id =>
     setActiveRoutine(routines.find(routine => routine.id === id));

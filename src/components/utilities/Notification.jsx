@@ -14,7 +14,7 @@ const Notification = props => {
 
     setIsClosing(true);
     clearTimeout(timerID);
-    setTimeout(() => deleteNotification(props.id), 350);
+    setTimeout(() => deleteNotification(props.id), 300);
   };
 
   useEffect(() => {
@@ -58,14 +58,14 @@ const GrowBar = keyframes`
 `;
 
 const StyledNotification = styled.div`
-  animation: ${({ theme }) => theme.animations.notification} 350ms ease;
+  animation: ${({ theme }) => theme.animations.notification} 300ms ease;
   position: relative;
   padding: 1.25rem;
   background: #fff;
   margin-top: 1.25rem;
   box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
   border-radius: 3px;
-  transition: transform ease 350ms;
+  transition: transform ease 300ms;
 
   &.closing {
     transform: translateX(calc(100% + 1.5rem));

@@ -11,7 +11,7 @@ import { RoutinesContext } from "../../context/RoutinesContext";
 import { NotificationsContext } from "../../context/NotificationsContext";
 import { v4 as uuid } from "uuid";
 
-const RoutineForm = ({ editing }) => {
+const RoutineForm = ({ editing, setRoutine }) => {
   const [routines, setRoutines] = useContext(RoutinesContext);
   const [redirect, setRedirect] = useState(null);
 
@@ -120,10 +120,21 @@ const RoutineForm = ({ editing }) => {
     e.preventDefault();
   };
 
-  const sendHome = () => setRedirect("/");
+  const sendHome = () => {
+    setRedirect("/");
+  };
 
   return redirect ? (
-    <Redirect to={redirect} />
+    <Redirect
+      to={{
+        pathname: redirect,
+        state: {
+          routine:
+            routines.find(routine => routine.id === currentRoutine.id) ||
+            routines[0],
+        },
+      }}
+    />
   ) : (
     <Row>
       <Column size={12} lg={8}>
