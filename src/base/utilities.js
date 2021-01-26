@@ -33,7 +33,6 @@ export const isInvalidTimeChange = (e, type) => {
 };
 
 export const isInvalidMetronomeValue = value => {
-  console.log(value);
   const tempo = parseInt(value);
   return (value !== "" && isNaN(tempo)) || tempo < 0 || tempo > 500;
 };

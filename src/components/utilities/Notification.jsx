@@ -84,7 +84,7 @@ const StyledNotification = styled.div`
     font-size: 0.75rem;
     top: -0.625rem;
     left: -0.625rem;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.25);
   }
 
   p {

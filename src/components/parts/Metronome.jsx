@@ -32,7 +32,7 @@ const Metronome = () => {
   };
 
   const tickMetronome = () => {
-    console.log(`Metronome ticked at ${bpm}.`);
+    console.log(`Metronome ticked at ${bpm} BPM.`);
     metronomeSound.currentTime = 0;
     metronomeSound.play();
   };
