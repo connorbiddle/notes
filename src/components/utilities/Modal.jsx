@@ -49,7 +49,7 @@ const CloseButton = styled.button`
   right: 1.15rem;
 
   opacity: 0.5;
-  transition: opacity 0.3s ease-out;
+  transition: opacity 1.3s ease-out;
   &:hover {
     opacity: 0.8;
   }

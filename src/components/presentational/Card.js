@@ -8,13 +8,12 @@ const Card = styled.section`
   margin-top: ${({ mt }) => mt && mt};
   margin-bottom: ${({ mb }) => mb && mb};
 
-  animation: ${({ theme, fadeIn }) =>
-    fadeIn ? theme.animations.fadeIn : "none"};
+  animation: ${({ theme, fadeIn }) => fadeIn && theme.animations.fadeIn};
 
   ${({ theme, fadeIn }) =>
     fadeIn &&
     css`
-      animation: 1s ${theme.animations.fadeIn} ease;
+      animation: 0.5s ${theme.animations.fadeIn} ease;
     `}
 `;
 

@@ -100,7 +100,7 @@ const StyledMetronome = styled(Card)`
   border-bottom-right-radius: 0;
 
   transform: translate(-50%, 100%);
-  transition: transform 350ms ease;
+  transition: transform 0.3s ease;
 
   &.visible {
     transform: translate(-50%, 0);
@@ -125,7 +125,7 @@ const OpenButton = styled.button`
 
   i {
     margin-left: 0.25rem;
-    transition: transform 350ms ease;
+    transition: transform 0.3s ease;
     &.flip {
       transform: rotate(180deg);
     }
