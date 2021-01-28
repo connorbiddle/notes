@@ -29,6 +29,7 @@ const StyledModal = styled.section`
   height: 100vh;
   background: rgba(0, 0, 0, 0.8);
   color: ${({ theme }) => theme.colors.dark};
+  z-index: 999;
 `;
 
 const StyledCard = styled(Card)`

@@ -5,14 +5,12 @@ import Notification from "../components/utilities/Notification";
 
 export const NotificationsContext = createContext();
 
-const MAX_NOTIFICATIONS = 5;
-
-const NotificationsProvider = ({ children }) => {
+const NotificationsProvider = ({ children, maxNumber }) => {
   const [state, dispatch] = useReducer((state, action) => {
     switch (action.type) {
       case "ADD_NOTIFICATION":
         const newState = [...state];
-        if (newState.length >= MAX_NOTIFICATIONS) newState.shift();
+        if (newState.length >= (maxNumber || 1)) newState.shift();
         newState.push({ ...action.payload });
         return newState;
       case "DELETE_NOTIFICATION":

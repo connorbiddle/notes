@@ -32,7 +32,7 @@ const Metronome = () => {
   };
 
   const tickMetronome = () => {
-    console.log(`Metronome ticked at ${bpm} BPM.`);
+    // console.log(`Metronome ticked at ${bpm} BPM.`);
     metronomeSound.currentTime = 0;
     metronomeSound.play();
   };
@@ -44,8 +44,19 @@ const Metronome = () => {
 
     setBpm(e.target.value);
 
+    console.log("playing", playing);
     if (playing) {
       pauseMetronome();
+      startMetronome();
+    }
+  };
+
+  const handleEnter = e => {
+    if (e.keyCode !== 13) return;
+
+    if (playing) {
+      pauseMetronome();
+    } else {
       startMetronome();
     }
   };
@@ -72,6 +83,7 @@ const Metronome = () => {
               width="3.5rem"
               noMargin
               onChange={onBpmChange}
+              onKeyDown={handleEnter}
             />
             &nbsp;&nbsp;BPM
           </Flex>

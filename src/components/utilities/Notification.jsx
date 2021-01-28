@@ -20,6 +20,8 @@ const Notification = props => {
   useEffect(() => {
     const timer = setTimeout(startRemoveNotification, props.duration || 5000);
     setTimerID(timer);
+
+    return () => clearTimeout(timerID);
     // eslint-disable-next-line
   }, []);
 

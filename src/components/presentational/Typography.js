@@ -29,7 +29,7 @@ export const MainTitle = styled.h1`
 
 export const Title = styled.h2`
   font-size: 1.5rem;
-  font-weight: bold;
+  font-weight: ${({ thin }) => (thin ? "400" : "bold")};
 
   @media (min-width: ${({ theme }) => theme.sizes.sm}) {
     margin-bottom: ${({ theme }) => theme.spacing.sm};
