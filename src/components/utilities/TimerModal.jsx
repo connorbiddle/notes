@@ -6,13 +6,14 @@ import { toTimeString } from "../../base/utilities";
 import IconButton from "./IconButton";
 
 const TimerModal = ({ task, close }) => {
-  const [timeLeft] = useState(task.duration);
+  const [timeLeft, setTimeLeft] = useState(task.duration);
+  const [isFinished, setIsFinished] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [intervalID, setIntervalID] = useState(null);
 
-  const TICK_FREQUENCY = 200; // Milliseconds apart
+  const TICK_FREQUENCY = 250; // Milliseconds apart
 
-  const togglePlaying = () => {
+  const handleButtonPress = () => {
     if (isPlaying) {
       setIsPlaying(false);
       stopTimer();
@@ -23,24 +24,43 @@ const TimerModal = ({ task, close }) => {
   };
 
   const startTimer = () => {
-    const timer = setInterval(tickTimer, TICK_FREQUENCY);
+    const now = Date.now();
+    const timer = setInterval(() => {
+      tickTimer(now, timer);
+    }, TICK_FREQUENCY);
     setIntervalID(timer);
+    console.log("TIME STARTED:", now);
   };
 
   const stopTimer = () => {
     clearInterval(intervalID);
   };
 
-  const tickTimer = () => {
-    // Calculate time since timer last started. Use to update timeLeft.
-    console.log("Tick!");
+  const tickTimer = (timeStarted, interval) => {
+    const now = Date.now();
+    const elapsed = (now - timeStarted) / 1000;
+    const remaining = timeLeft - elapsed;
+
+    if (remaining > 0) {
+      setTimeLeft(remaining);
+    } else {
+      triggerAlarm(interval);
+    }
+  };
+
+  const triggerAlarm = interval => {
+    setIsPlaying(false);
+    setIsFinished(true);
+    clearInterval(interval);
+    console.log("alarm!");
   };
 
   useEffect(() => {
     return () => {
       clearInterval(intervalID);
     };
-  });
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <Modal condition={task !== null} close={close}>
@@ -62,7 +82,8 @@ const TimerModal = ({ task, close }) => {
           <IconButton
             icon={`fas fa-${isPlaying ? "pause" : "play"}`}
             background={isPlaying ? "danger" : "success"}
-            onClick={togglePlaying}
+            onClick={handleButtonPress}
+            disabled={isFinished}
           />
         </Flex>
       </Flex>

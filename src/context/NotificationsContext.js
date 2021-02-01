@@ -60,10 +60,10 @@ const NotificationWrapper = styled.div`
   bottom: 1rem;
   left: 1rem;
   right: 1rem;
+  z-index: 1001;
 
   @media (min-width: ${({ theme }) => theme.sizes.sm}) {
     left: unset;
-    right: 1rem;
     width: 300px;
   }
 `;

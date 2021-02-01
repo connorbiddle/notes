@@ -21,18 +21,25 @@ const SHARED_STYLES = css`
 `;
 
 export const MainTitle = styled.h1`
-  font-size: 2.625rem;
+  font-size: 2rem;
   font-weight: bold;
-  margin-bottom: 0.2rem;
+
+  @media (min-width: ${({ theme }) => theme.sizes.sm}) {
+    font-size: 2.625rem;
+    margin-bottom: 0.2rem;
+  }
+
   ${SHARED_STYLES}
 `;
 
 export const Title = styled.h2`
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: ${({ thin }) => (thin ? "400" : "bold")};
+  line-height: 1.3;
 
   @media (min-width: ${({ theme }) => theme.sizes.sm}) {
     margin-bottom: ${({ theme }) => theme.spacing.sm};
+    font-size: 1.5rem;
   }
 
   ${({ theme, centerUntilLg }) =>

@@ -17,7 +17,12 @@ const IconButton = props => {
 const StyledIconButton = styled.button`
   cursor: pointer;
   border: none;
-  margin-bottom: ${({ theme, margin }) => (margin ? theme.spacing.sm : 0)};
+  margin-bottom: ${({ theme, margin }) => (margin ? theme.spacing[margin] : 0)};
+
+  &:disabled {
+    cursor: default;
+    background: ${({ theme }) => theme.colors.lightGrey} !important;
+  }
 
   ${({ theme, background }) =>
     background

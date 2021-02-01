@@ -5,6 +5,7 @@ import RoutineList from "../parts/RoutineList";
 import GetStarted from "../parts/GetStarted";
 import { RoutinesContext } from "../../context/RoutinesContext";
 import { useLocation } from "react-router-dom";
+import styled from "styled-components";
 
 const Home = () => {
   const location = useLocation();
@@ -18,7 +19,7 @@ const Home = () => {
     setActiveRoutine(routines.find(routine => routine.id === id));
 
   return routines.length > 0 ? (
-    <section>
+    <StyledHome>
       <Row>
         <Column lg={8}>
           <ActiveRoutine routine={activeRoutine} />
@@ -30,10 +31,14 @@ const Home = () => {
           />
         </Column>
       </Row>
-    </section>
+    </StyledHome>
   ) : (
     <GetStarted />
   );
 };
+
+const StyledHome = styled.section`
+  padding-bottom: 8rem;
+`;
 
 export default Home;

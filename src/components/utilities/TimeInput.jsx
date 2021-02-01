@@ -4,7 +4,7 @@ import { inputStyles } from "./Input";
 import { toTimeString } from "../../base/utilities";
 import TimeInputModal from "./TimeInputModal";
 
-const TimeInput = ({ value, onChange }) => {
+const TimeInput = props => {
   const [modalActive, setModalActive] = useState(false);
 
   const openModal = () => setModalActive(true);
@@ -12,14 +12,14 @@ const TimeInput = ({ value, onChange }) => {
 
   return (
     <>
-      <StyledTimeInput onClick={openModal}>
-        {toTimeString(value)}
+      <StyledTimeInput onClick={openModal} {...props}>
+        {toTimeString(props.value)}
       </StyledTimeInput>
       <TimeInputModal
         condition={modalActive}
         close={closeModal}
-        seconds={value}
-        onChange={onChange}
+        seconds={props.value}
+        onChange={props.onChange}
       />
     </>
   );

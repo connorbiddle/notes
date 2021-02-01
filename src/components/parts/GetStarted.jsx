@@ -26,6 +26,7 @@ const StyledGetStarted = styled.div`
   position: absolute;
   top: 45%;
   left: 50%;
+  width: calc(100% - 2rem);
   transform: translate(-50%, -50%);
 
   animation: ${({ theme }) => theme.animations.fadeInAlt} ease 1.25s;

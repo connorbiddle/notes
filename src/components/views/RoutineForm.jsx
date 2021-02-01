@@ -173,6 +173,7 @@ const RoutineForm = ({ editing, setRoutine }) => {
                       onChange={value =>
                         onTaskChange(value, task.id, "duration")
                       }
+                      noMargin
                     />
                   </Column>
                   <Column size="20">
@@ -182,6 +183,7 @@ const RoutineForm = ({ editing, setRoutine }) => {
                       onChange={e =>
                         onTaskChange(e.target.value, task.id, "name")
                       }
+                      noMargin
                     />
                   </Column>
                   <Column size="1">
@@ -208,7 +210,7 @@ const RoutineForm = ({ editing, setRoutine }) => {
                 icon="fas fa-plus"
                 color="success"
                 large
-                margin
+                margin="md"
               />
             </Flex>
 

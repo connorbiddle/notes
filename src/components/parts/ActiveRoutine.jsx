@@ -22,11 +22,14 @@ const ActiveRoutine = ({ routine }) => {
   return routine ? (
     <Card mb="1rem" fadeIn key={routine.id}>
       <Flex alignItems="center" justifyContent="space-between">
-        <Title centerUntilLg>{routine.title}</Title>
+        <Title>{routine.title}</Title>
         <Link to={`/edit/${routine.id}`}>
           <SmallText>
             <Muted>
-              Edit <i className="fas fa-edit" />
+              <Flex alignItems="center">
+                Edit&nbsp;
+                <i className="fas fa-edit" />
+              </Flex>
             </Muted>
           </SmallText>
         </Link>
@@ -35,7 +38,7 @@ const ActiveRoutine = ({ routine }) => {
         {routine.tasks.map(task => (
           <ListItem key={task.id} onClick={startTimer(task)}>
             <Row>
-              <Column size={2} sm={1.5} lg={1}>
+              <Column size={2} sm={1.5} lg={1} noMargin>
                 <Muted>{toTimeString(task.duration)}</Muted>
               </Column>
               <Column size={10} sm={10.5} lg={11}>

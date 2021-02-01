@@ -42,7 +42,6 @@ const Notification = props => {
         onClick={startRemoveNotification}
         icon="fa fa-times"
         color="darkGrey"
-        large
       />
       <p>{props.message}</p>
       <div />
@@ -68,6 +67,7 @@ const StyledNotification = styled.div`
   box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
   border-radius: 3px;
   transition: transform ease 300ms;
+  z-index: 1001;
 
   &.closing {
     transform: translateX(calc(100% + 1.5rem));
@@ -111,8 +111,9 @@ const StyledNotification = styled.div`
 
 const CloseButton = styled(IconButton)`
   position: absolute;
+  font-size: 1.15rem;
   top: 0.5rem;
-  right: 0.5rem;
+  right: 0.75rem;
 `;
 
 export default Notification;

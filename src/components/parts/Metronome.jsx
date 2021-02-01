@@ -75,7 +75,7 @@ const Metronome = () => {
         Metronome <i className={`fas fa-chevron-up ${visible && "flip"}`} />
       </OpenButton>
       <Row>
-        <Column size="6">
+        <Column size="6" noMargin>
           <Flex alignItems="center">
             <Input
               value={bpm}
@@ -103,6 +103,7 @@ const Metronome = () => {
 };
 
 const StyledMetronome = styled(Card)`
+  width: 12.5rem;
   position: fixed;
   z-index: 1000;
   bottom: 0;
