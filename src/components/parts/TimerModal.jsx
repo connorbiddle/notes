@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Flex from "../presentational/Flex";
 import { Title } from "../presentational/Typography";
-import Modal from "./Modal";
+import Modal from "../utilities/Modal";
 import { toTimeString } from "../../base/utilities";
-import IconButton from "./IconButton";
+import IconButton from "../utilities/IconButton";
 
 const TimerModal = ({ task, close }) => {
   const [timeLeft, setTimeLeft] = useState(task.duration);

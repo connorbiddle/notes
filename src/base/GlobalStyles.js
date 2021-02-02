@@ -15,6 +15,10 @@ const GlobalStyles = createGlobalStyle`
     color: inherit;
     text-decoration: none;
   }
+
+  .draggable-item {
+    cursor: pointer !important;
+  }
 `;
 
 export default GlobalStyles;

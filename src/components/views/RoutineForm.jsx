@@ -10,6 +10,7 @@ import IconButton from "../utilities/IconButton";
 import { RoutinesContext } from "../../context/RoutinesContext";
 import { NotificationsContext } from "../../context/NotificationsContext";
 import { v4 as uuid } from "uuid";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
 const RoutineForm = ({ editing, setRoutine }) => {
   const [routines, setRoutines] = useContext(RoutinesContext);
@@ -57,6 +58,14 @@ const RoutineForm = ({ editing, setRoutine }) => {
       newRoutine.tasks.splice(nowEditing, 1, newTask);
       return newRoutine;
     });
+  };
+
+  const onTaskDrag = result => {
+    const tasks = [...currentRoutine.tasks];
+    const taskToReorder = tasks.splice(result.source.index, 1)[0];
+    tasks.splice(result.destination.index, 0, taskToReorder);
+
+    setCurrentRoutine(oldRoutine => ({ ...oldRoutine, tasks }));
   };
 
   const addNewTask = () =>
@@ -164,44 +173,76 @@ const RoutineForm = ({ editing, setRoutine }) => {
                 />
               </Column>
             </Row>
-            {currentRoutine.tasks.length > 0 &&
-              currentRoutine.tasks.map(task => (
-                <Row key={task.id}>
-                  <Column size="2">
-                    <TimeInput
-                      value={task.duration}
-                      onChange={value =>
-                        onTaskChange(value, task.id, "duration")
-                      }
-                      noMargin
-                    />
-                  </Column>
-                  <Column size="20">
-                    <Input
-                      placeholder="Task name"
-                      value={task.name}
-                      onChange={e =>
-                        onTaskChange(e.target.value, task.id, "name")
-                      }
-                      noMargin
-                    />
-                  </Column>
-                  <Column size="1">
-                    <Flex
-                      alignItems="center"
-                      justifyContent="flex-end"
-                      height="65%"
-                    >
-                      <IconButton
-                        type="button"
-                        onClick={() => deleteTask(task.id)}
-                        icon="fas fa-trash"
-                        color="danger"
-                      />
-                    </Flex>
-                  </Column>
-                </Row>
-              ))}
+
+            {/* --- TASK INPUTS --- */}
+            {currentRoutine.tasks.length > 0 && (
+              <DragDropContext onDragEnd={onTaskDrag}>
+                <Droppable droppableId="taskInputs">
+                  {provided => (
+                    <div {...provided.droppableProps} ref={provided.innerRef}>
+                      {currentRoutine.tasks.map((task, index) => (
+                        <Draggable
+                          key={task.id}
+                          draggableId={task.id}
+                          index={index}
+                          disableInteractiveElementBlocking
+                        >
+                          {provided => (
+                            <div
+                              className="draggable-item"
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                              ref={provided.innerRef}
+                            >
+                              <Row>
+                                <Column size="2">
+                                  <TimeInput
+                                    value={task.duration}
+                                    onChange={value =>
+                                      onTaskChange(value, task.id, "duration")
+                                    }
+                                    noMargin
+                                  />
+                                </Column>
+                                <Column size="20">
+                                  <Input
+                                    placeholder="Task name"
+                                    value={task.name}
+                                    onChange={e =>
+                                      onTaskChange(
+                                        e.target.value,
+                                        task.id,
+                                        "name"
+                                      )
+                                    }
+                                    noMargin
+                                  />
+                                </Column>
+                                <Column size="1">
+                                  <Flex
+                                    alignItems="center"
+                                    justifyContent="flex-end"
+                                    height="65%"
+                                  >
+                                    <IconButton
+                                      type="button"
+                                      onClick={() => deleteTask(task.id)}
+                                      icon="fas fa-trash"
+                                      color="danger"
+                                    />
+                                  </Flex>
+                                </Column>
+                              </Row>
+                            </div>
+                          )}
+                        </Draggable>
+                      ))}
+                      {provided.placeholder}
+                    </div>
+                  )}
+                </Droppable>
+              </DragDropContext>
+            )}
 
             <Flex justifyContent="center">
               <IconButton

@@ -8,27 +8,35 @@ const Input = props => {
 
   const onInputChange = e => {
     let error = props.onChange(e) === false;
-
     if (!error) setInputValue(e.target.value);
   };
+
+  const onClick = e => e.target.focus(); // Necessary for drag & drop.
 
   return (
     <StyledInput
       {...props}
       value={inputValue}
-      onChange={onInputChange}
       onKeyDown={props.onKeyDown}
+      onChange={onInputChange}
+      onClick={onClick}
     />
   );
 };
 
 // Reused in TimeInput
 export const inputStyles = css`
+  cursor: pointer;
   font-family: inherit;
   display: block;
   border: none;
+  background: none;
   border-bottom: 1px solid ${({ theme }) => theme.colors.lightGrey};
   padding: 0.5rem 0;
+
+  &:focus {
+    cursor: text;
+  }
 
   margin-bottom: ${({ theme, large, noMargin }) => {
     if (noMargin) return 0;

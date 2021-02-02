@@ -2,9 +2,9 @@ import { useState } from "react";
 import styled from "styled-components";
 import Flex from "../presentational/Flex";
 import { Row, Column } from "../presentational/Grid";
-import Modal from "./Modal";
-import Button from "./Button";
-import { inputStyles } from "./Input";
+import Modal from "../utilities/Modal";
+import Button from "../utilities/Button";
+import { inputStyles } from "../utilities/Input";
 import { isInvalidTimeChange } from "../../base/utilities";
 
 const TimeInputModal = ({ condition, close, seconds, onChange }) => {

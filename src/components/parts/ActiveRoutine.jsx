@@ -5,7 +5,7 @@ import Flex from "../presentational/Flex";
 import { Title, Muted, SmallText } from "../presentational/Typography";
 import { List, ListItem } from "../presentational/List";
 import { Row, Column } from "../presentational/Grid";
-import TimerModal from "../utilities/TimerModal";
+import TimerModal from "../parts/TimerModal";
 import { toTimeString } from "../../base/utilities";
 
 const ActiveRoutine = ({ routine }) => {

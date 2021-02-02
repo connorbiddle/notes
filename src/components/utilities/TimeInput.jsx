@@ -2,7 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import { inputStyles } from "./Input";
 import { toTimeString } from "../../base/utilities";
-import TimeInputModal from "./TimeInputModal";
+import TimeInputModal from "../parts/TimeInputModal";
 
 const TimeInput = props => {
   const [modalActive, setModalActive] = useState(false);
