@@ -11,15 +11,12 @@ const Input = props => {
     if (!error) setInputValue(e.target.value);
   };
 
-  const onClick = e => e.target.focus(); // Necessary for drag & drop.
-
   return (
     <StyledInput
       {...props}
       value={inputValue}
       onKeyDown={props.onKeyDown}
       onChange={onInputChange}
-      onClick={onClick}
     />
   );
 };

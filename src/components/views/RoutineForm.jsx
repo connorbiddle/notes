@@ -10,40 +10,34 @@ import IconButton from "../utilities/IconButton";
 import { RoutinesContext } from "../../context/RoutinesContext";
 import { NotificationsContext } from "../../context/NotificationsContext";
 import { v4 as uuid } from "uuid";
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
-const RoutineForm = ({ editing, setRoutine }) => {
-  const [routines, setRoutines] = useContext(RoutinesContext);
+const RoutineForm = ({ editing }) => {
   const [redirect, setRedirect] = useState(null);
 
   const { addNotification } = useContext(NotificationsContext);
+  const { routines, addRoutine, editRoutine, deleteRoutine } = useContext(
+    RoutinesContext
+  );
 
-  let routine;
-  const targetRoutine = routines.find(routine => routine.id === editing);
-
-  if (targetRoutine) {
-    routine = { ...targetRoutine };
-  } else {
-    routine = {
-      id: uuid(),
-      title: "",
-      tasks: [{ id: uuid(), name: "", duration: 0 }],
-    };
-  }
-
-  const [currentRoutine, setCurrentRoutine] = useState(routine);
-
-  const deleteRoutine = () => {
-    setRoutines(prev => prev.filter(routine => routine.id !== editing));
-    addNotification({ type: "success", message: "Routine deleted." });
-    sendHome();
+  const targetRoutine = routines.find(routine => routine.id === editing) || {
+    id: uuid(),
+    title: "",
+    tasks: [{ id: uuid(), name: "", duration: 0 }],
   };
+
+  const [currentRoutine, setCurrentRoutine] = useState(targetRoutine);
 
   const onTitleChange = e => {
     setCurrentRoutine(oldRoutine => ({
       ...oldRoutine,
       title: e.target.value,
     }));
+  };
+
+  const deleteCurrentRoutine = () => {
+    deleteRoutine(currentRoutine.id);
+    addNotification({ type: "danger", message: "Routine deleted." });
+    sendHome();
   };
 
   const onTaskChange = (value, id, property) => {
@@ -60,14 +54,6 @@ const RoutineForm = ({ editing, setRoutine }) => {
     });
   };
 
-  const onTaskDrag = result => {
-    const tasks = [...currentRoutine.tasks];
-    const taskToReorder = tasks.splice(result.source.index, 1)[0];
-    tasks.splice(result.destination.index, 0, taskToReorder);
-
-    setCurrentRoutine(oldRoutine => ({ ...oldRoutine, tasks }));
-  };
-
   const addNewTask = () =>
     setCurrentRoutine(oldRoutine => ({
       ...oldRoutine,
@@ -81,12 +67,26 @@ const RoutineForm = ({ editing, setRoutine }) => {
     });
   };
 
+  const startTaskDrag = id => {
+    return e => {
+      const element = document.getElementById(`task-${id}`);
+      console.log("%cStarting drag:", "color: lightgreen", element);
+    };
+  };
+
+  const endTaskDrag = id => {
+    return e => {
+      const element = document.getElementById(`task-${id}`);
+      console.log("%cEnding drag:", "color: indianred", element);
+    };
+  };
+
   const checkPropertyValidity = property => {
     if (property !== "name" && property !== "duration")
       throw new Error('Property "name" or "duration" required.');
   };
 
-  const validateRoutine = () => {
+  const getRoutineError = () => {
     let error;
 
     if (
@@ -102,23 +102,18 @@ const RoutineForm = ({ editing, setRoutine }) => {
   const onFormSubmit = e => {
     e.preventDefault();
 
-    const nowEditing = routines.findIndex(routine => routine.id === editing);
-    const newRoutines = [...routines];
-
-    const error = validateRoutine();
+    const error = getRoutineError();
     if (error) {
       addNotification({ message: error, type: "danger" });
       return;
     }
 
-    // Modify existing routine, else create new one
-    if (nowEditing !== -1) {
-      newRoutines[nowEditing] = currentRoutine;
+    if (editing) {
+      editRoutine(currentRoutine);
     } else {
-      newRoutines.push(currentRoutine);
+      addRoutine(currentRoutine);
     }
 
-    setRoutines(newRoutines);
     addNotification({ message: "Routine saved.", type: "success" });
     sendHome();
   };
@@ -129,9 +124,7 @@ const RoutineForm = ({ editing, setRoutine }) => {
     e.preventDefault();
   };
 
-  const sendHome = () => {
-    setRedirect("/");
-  };
+  const sendHome = () => setRedirect("/");
 
   return redirect ? (
     <Redirect
@@ -155,7 +148,7 @@ const RoutineForm = ({ editing, setRoutine }) => {
                   <Flex alignItems="center" height="65%">
                     <IconButton
                       type="button"
-                      onClick={deleteRoutine}
+                      onClick={deleteCurrentRoutine}
                       icon="fas fa-trash"
                       color="danger"
                       large
@@ -175,74 +168,50 @@ const RoutineForm = ({ editing, setRoutine }) => {
             </Row>
 
             {/* --- TASK INPUTS --- */}
-            {currentRoutine.tasks.length > 0 && (
-              <DragDropContext onDragEnd={onTaskDrag}>
-                <Droppable droppableId="taskInputs">
-                  {provided => (
-                    <div {...provided.droppableProps} ref={provided.innerRef}>
-                      {currentRoutine.tasks.map((task, index) => (
-                        <Draggable
-                          key={task.id}
-                          draggableId={task.id}
-                          index={index}
-                          disableInteractiveElementBlocking
-                        >
-                          {provided => (
-                            <div
-                              className="draggable-item"
-                              {...provided.draggableProps}
-                              {...provided.dragHandleProps}
-                              ref={provided.innerRef}
-                            >
-                              <Row>
-                                <Column size="2">
-                                  <TimeInput
-                                    value={task.duration}
-                                    onChange={value =>
-                                      onTaskChange(value, task.id, "duration")
-                                    }
-                                    noMargin
-                                  />
-                                </Column>
-                                <Column size="20">
-                                  <Input
-                                    placeholder="Task name"
-                                    value={task.name}
-                                    onChange={e =>
-                                      onTaskChange(
-                                        e.target.value,
-                                        task.id,
-                                        "name"
-                                      )
-                                    }
-                                    noMargin
-                                  />
-                                </Column>
-                                <Column size="1">
-                                  <Flex
-                                    alignItems="center"
-                                    justifyContent="flex-end"
-                                    height="65%"
-                                  >
-                                    <IconButton
-                                      type="button"
-                                      onClick={() => deleteTask(task.id)}
-                                      icon="fas fa-trash"
-                                      color="danger"
-                                    />
-                                  </Flex>
-                                </Column>
-                              </Row>
-                            </div>
-                          )}
-                        </Draggable>
-                      ))}
-                      {provided.placeholder}
-                    </div>
-                  )}
-                </Droppable>
-              </DragDropContext>
-            )}
+            {currentRoutine.tasks.length > 0 &&
+              currentRoutine.tasks.map((task, index) => (
+                <Row
+                  className="task"
+                  id={`task-${task.id}`}
+                  key={task.id}
+                  onMouseDown={startTaskDrag(task.id)}
+                  onMouseUp={endTaskDrag(task.id)}
+                >
+                  <Column size="2">
+                    <TimeInput
+                      value={task.duration}
+                      onChange={value =>
+                        onTaskChange(value, task.id, "duration")
+                      }
+                      noMargin
+                    />
+                  </Column>
+                  <Column size="20">
+                    <Input
+                      placeholder="Task name"
+                      value={task.name}
+                      onChange={e =>
+                        onTaskChange(e.target.value, task.id, "name")
+                      }
+                      noMargin
+                    />
+                  </Column>
+                  <Column size="1">
+                    <Flex
+                      alignItems="center"
+                      justifyContent="flex-end"
+                      height="65%"
+                    >
+                      <IconButton
+                        type="button"
+                        onClick={() => deleteTask(task.id)}
+                        icon="fas fa-trash"
+                        color="danger"
+                      />
+                    </Flex>
+                  </Column>
+                </Row>
+              ))}
 
             <Flex justifyContent="center">
               <IconButton

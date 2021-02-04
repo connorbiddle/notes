@@ -8,7 +8,7 @@ import Button from "../utilities/Button";
 import { Link } from "react-router-dom";
 
 const RoutineList = ({ setRoutine, activeRoutine }) => {
-  const [routines] = useContext(RoutinesContext);
+  const { routines } = useContext(RoutinesContext);
 
   const key = activeRoutine ? activeRoutine.id : null;
 

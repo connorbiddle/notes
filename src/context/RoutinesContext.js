@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useReducer } from "react";
 
 const LS_KEY = "notes-routines-v1";
 
@@ -71,24 +71,60 @@ export const RoutinesContext = createContext();
 // ];
 
 export const RoutinesProvider = ({ children }) => {
-  const [routines, setRoutineState] = useState(
-    JSON.parse(localStorage.getItem(LS_KEY)) || []
-  );
+  const [routines, dispatch] = useReducer((state, action) => {
+    let newRoutines;
 
-  const setRoutines = newRoutineList => {
-    setRoutineState(prev => {
-      if (typeof newRoutineList === "function") {
-        localStorage.setItem(LS_KEY, JSON.stringify(newRoutineList(prev)));
-        return newRoutineList(prev);
-      } else {
-        localStorage.setItem(LS_KEY, JSON.stringify(newRoutineList));
-        return newRoutineList;
-      }
+    switch (action.type) {
+      case "ADD_ROUTINE":
+        newRoutines = [...state, action.payload];
+        break;
+      case "EDIT_ROUTINE":
+        newRoutines = [...state];
+        const oldRoutineIndex = newRoutines.findIndex(
+          routine => routine.id === action.payload.id
+        );
+        newRoutines[oldRoutineIndex] = action.payload;
+        break;
+      case "DELETE_ROUTINE":
+        newRoutines = [...state].filter(
+          routine => routine.id !== action.payload.id
+        );
+        break;
+      default:
+        throw new Error("Invalid action.type.");
+    }
+
+    localStorage.setItem(LS_KEY, JSON.stringify(newRoutines));
+    return newRoutines;
+  }, JSON.parse(localStorage.getItem(LS_KEY)) || []);
+
+  const addRoutine = routine => {
+    dispatch({
+      type: "ADD_ROUTINE",
+      payload: routine,
+    });
+  };
+
+  const editRoutine = routine => {
+    dispatch({
+      type: "EDIT_ROUTINE",
+      payload: routine,
+    });
+  };
+
+  const deleteRoutine = id => {
+    dispatch({
+      type: "DELETE_ROUTINE",
+      payload: {
+        id,
+      },
     });
   };
 
   return (
-    <RoutinesContext.Provider value={[routines, setRoutines]}>
+    <RoutinesContext.Provider
+      value={{ routines, addRoutine, editRoutine, deleteRoutine }}
+    >
       {children}
     </RoutinesContext.Provider>
   );

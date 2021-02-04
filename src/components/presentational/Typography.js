@@ -8,6 +8,8 @@ const SHARED_STYLES = css`
 
   margin-bottom: ${({ theme, mBot }) => {
     switch (mBot) {
+      case 1:
+        return theme.spacing.sm;
       case 2:
         return theme.spacing.md;
       case 3:
@@ -15,7 +17,7 @@ const SHARED_STYLES = css`
       case 4:
         return theme.spacing.xl;
       default:
-        return theme.spacing.sm;
+        return "0";
     }
   }} !important;
 `;
@@ -26,7 +28,6 @@ export const MainTitle = styled.h1`
 
   @media (min-width: ${({ theme }) => theme.sizes.sm}) {
     font-size: 2.625rem;
-    margin-bottom: 0.2rem;
   }
 
   ${SHARED_STYLES}

@@ -10,7 +10,7 @@ import styled from "styled-components";
 const Home = () => {
   const location = useLocation();
 
-  const [routines] = useContext(RoutinesContext);
+  const { routines } = useContext(RoutinesContext);
   const [activeRoutine, setActiveRoutine] = useState(
     location.state ? location.state.routine : routines[0]
   );

@@ -27,14 +27,17 @@ export const Column = styled.div`
   @media (min-width: ${({ theme }) => theme.sizes.sm}) {
     flex: ${props => props.sm};
     padding: 0 ${({ theme }) => theme.spacing.md};
+    ${({ sm }) => sm && "margin-bottom: 0"}
   }
 
   @media (min-width: ${({ theme }) => theme.sizes.md}) {
     flex: ${props => props.md};
+    ${({ md }) => md && "margin-bottom: 0"}
   }
 
   @media (min-width: ${({ theme }) => theme.sizes.lg}) {
     flex: ${props => props.lg};
+    ${({ lg }) => lg && "margin-bottom: 0"}
   }
 
   @media (min-width: ${({ theme }) => theme.sizes.xl}) {
