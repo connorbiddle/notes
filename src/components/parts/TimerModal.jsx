@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import Flex from "../presentational/Flex";
 import { Title } from "../presentational/Typography";
 import Modal from "../utilities/Modal";
-import { toTimeString } from "../../base/utilities";
 import IconButton from "../utilities/IconButton";
+import { toTimeString } from "../../base/utilities";
+import Alarm from "../../assets/alarm.wav";
 
 const TimerModal = ({ task, close }) => {
+  const [alarm, setAlarm] = useState(new Audio(Alarm));
   const [timeLeft, setTimeLeft] = useState(task.duration);
   const [isFinished, setIsFinished] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -29,7 +31,6 @@ const TimerModal = ({ task, close }) => {
       tickTimer(now, timer);
     }, TICK_FREQUENCY);
     setIntervalID(timer);
-    console.log("TIME STARTED:", now);
   };
 
   const stopTimer = () => {
@@ -52,12 +53,16 @@ const TimerModal = ({ task, close }) => {
     setIsPlaying(false);
     setIsFinished(true);
     clearInterval(interval);
-    console.log("alarm!");
+    alarm.play();
   };
 
   useEffect(() => {
+    alarm.loop = true;
+
     return () => {
       clearInterval(intervalID);
+      alarm.pause();
+      setAlarm(null);
     };
     // eslint-disable-next-line
   }, []);
