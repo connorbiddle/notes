@@ -1,5 +1,9 @@
 import styled, { css } from "styled-components";
 
+export const List = styled.ul`
+  margin-bottom: ${({ theme, mbot }) => (mbot ? theme.spacing.md : 0)};
+`;
+
 export const ListItem = ({ children, onClick, theme, hoverable, active }) => {
   return (
     <StyledListItem
@@ -12,10 +16,6 @@ export const ListItem = ({ children, onClick, theme, hoverable, active }) => {
     </StyledListItem>
   );
 };
-
-export const List = styled.ul`
-  margin-bottom: ${({ theme, mbot }) => (mbot ? theme.spacing.md : 0)};
-`;
 
 const StyledListItem = styled.li`
   cursor: ${({ onClick }) => (onClick ? "pointer" : "default")};

@@ -67,20 +67,6 @@ const RoutineForm = ({ editing }) => {
     });
   };
 
-  const startTaskDrag = id => {
-    return e => {
-      const element = document.getElementById(`task-${id}`);
-      console.log("%cStarting drag:", "color: lightgreen", element);
-    };
-  };
-
-  const endTaskDrag = id => {
-    return e => {
-      const element = document.getElementById(`task-${id}`);
-      console.log("%cEnding drag:", "color: indianred", element);
-    };
-  };
-
   const checkPropertyValidity = property => {
     if (property !== "name" && property !== "duration")
       throw new Error('Property "name" or "duration" required.');
@@ -169,14 +155,8 @@ const RoutineForm = ({ editing }) => {
 
             {/* --- TASK INPUTS --- */}
             {currentRoutine.tasks.length > 0 &&
-              currentRoutine.tasks.map((task, index) => (
-                <Row
-                  className="task"
-                  id={`task-${task.id}`}
-                  key={task.id}
-                  onMouseDown={startTaskDrag(task.id)}
-                  onMouseUp={endTaskDrag(task.id)}
-                >
+              currentRoutine.tasks.map(task => (
+                <Row key={task.id}>
                   <Column size="2">
                     <TimeInput
                       value={task.duration}

@@ -71,19 +71,23 @@ const TimerModal = ({ task, close }) => {
           flexDirection="column"
           height="100%"
         >
-          <Title textAlign="center" mBot={2}>
+          <Title textAlign="center" thin>
+            Task
+          </Title>
+          <Title textAlign="center" mBot={3}>
             {task.name}
           </Title>
           <Title textAlign="center" thin>
-            {toTimeString(timeLeft)}
+            Time Left
           </Title>
+          <Title textAlign="center">{toTimeString(timeLeft)}</Title>
         </Flex>
         <Flex alignItems="center" justifyContent="center">
           <IconButton
             icon={`fas fa-${isPlaying ? "pause" : "play"}`}
             background={isPlaying ? "danger" : "success"}
             onClick={handleButtonPress}
-            disabled={isFinished}
+            disabled={isFinished || task.duration <= 0}
           />
         </Flex>
       </Flex>

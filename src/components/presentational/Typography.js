@@ -4,7 +4,7 @@ import styled, { css } from "styled-components";
 const SHARED_STYLES = css`
   text-align: ${({ textAlign }) => textAlign && textAlign} !important;
   color: ${({ theme, light }) =>
-    light ? theme.colors.light : theme.colors.dark} !important;
+    light ? theme.colors.light : theme.colors.dark};
 
   margin-bottom: ${({ theme, mBot }) => {
     switch (mBot) {
@@ -38,9 +38,20 @@ export const Title = styled.h2`
   font-weight: ${({ thin }) => (thin ? "400" : "bold")};
   line-height: 1.3;
 
+  ${SHARED_STYLES}
+
+  ${({ theme, thin }) =>
+    thin &&
+    css`
+      font-size: 1rem;
+      font-weight: 400;
+      color: ${theme.colors.darkGrey};
+      text-transform: uppercase;
+    `}
+
   @media (min-width: ${({ theme }) => theme.sizes.sm}) {
     margin-bottom: ${({ theme }) => theme.spacing.sm};
-    font-size: 1.5rem;
+    font-size: ${({ thin }) => (thin ? "1.2rem" : "1.5rem")};
   }
 
   ${({ theme, centerUntilLg }) =>
@@ -49,8 +60,6 @@ export const Title = styled.h2`
       text-align: center;
       @media (min-width: ${theme.sizes.lg}) { text-align: left; }
     `}
-
-  ${SHARED_STYLES}
 `;
 
 export const SmallText = styled.div`
