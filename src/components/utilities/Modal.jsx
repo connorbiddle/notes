@@ -1,16 +1,30 @@
+import { useEffect } from "react";
 import styled from "styled-components";
 import Card from "../presentational/Card";
+import IconButton from "../utilities/IconButton";
 
 const Modal = ({ children, condition, close }) => {
   if (typeof condition == "undefined" || typeof close == "undefined")
     throw new Error("Modal component requires 'condition' & 'close' props.");
 
+  useEffect(() => {
+    const handleClose = e => {
+      if (e.keyCode === 27) close();
+    };
+
+    window.addEventListener("keydown", handleClose);
+    return () => window.removeEventListener("keydown", handleClose);
+  }, [close]);
+
   return condition === true ? (
     <StyledModal>
       <StyledCard>
-        <CloseButton onClick={close} type="button">
-          <i className="fas fa-times" />
-        </CloseButton>
+        <CloseButton
+          onClick={close}
+          type="button"
+          icon="fas fa-times"
+          color="darkGrey"
+        />
         {children}
       </StyledCard>
     </StyledModal>
@@ -40,20 +54,10 @@ const StyledCard = styled(Card)`
   max-height: 90%;
 `;
 
-const CloseButton = styled.button`
-  cursor: pointer;
+const CloseButton = styled(IconButton)`
   position: absolute;
-  font-size: 1.25rem;
-  background: none;
-  border: none;
   top: 0.85rem;
   right: 1.15rem;
-
-  opacity: 0.5;
-  transition: opacity 1.3s ease-out;
-  &:hover {
-    opacity: 0.8;
-  }
 `;
 
 export default Modal;

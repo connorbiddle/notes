@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 // This grid system is designed mobile-first.
 // The 'sizes' prop defines the base size (i.e. on mobile).
@@ -42,7 +42,12 @@ export const Column = styled.div`
 
   @media (min-width: ${({ theme }) => theme.sizes.xl}) {
     flex: ${props => props.xl};
+    ${({ xl }) => xl && "margin-bottom: 0"}
   }
 
-  margin-bottom: ${({ noMargin }) => noMargin && 0};
+  ${({ noMargin }) =>
+    noMargin &&
+    css`
+      margin-bottom: 0;
+    `}
 `;

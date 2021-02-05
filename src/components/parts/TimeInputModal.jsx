@@ -71,7 +71,7 @@ const TimeInputModal = ({ condition, close, seconds, onChange }) => {
           />
         </Flex>
         <Row>
-          <Column size={6}>
+          <Column size={6} noMargin>
             <Button
               color="danger"
               icon="fas fa-times"
