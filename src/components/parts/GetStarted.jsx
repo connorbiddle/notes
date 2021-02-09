@@ -24,12 +24,15 @@ const GetStarted = () => {
 
 const StyledGetStarted = styled.div`
   position: absolute;
-  top: 45%;
+  top: 57.5%;
   left: 50%;
   width: calc(100% - 2rem);
   transform: translate(-50%, -50%);
-
   animation: ${({ theme }) => theme.animations.fadeInAlt} ease 1.25s;
+
+  @media (min-width: ${({ theme }) => theme.sizes.lg}) {
+    top: 45%;
+  }
 `;
 
 export default GetStarted;

@@ -178,7 +178,11 @@ const RoutineForm = ({ editing }) => {
               <DragDropContext onDragEnd={onDragEnd}>
                 <Droppable droppableId="tasks">
                   {provided => (
-                    <div {...provided.droppableProps} ref={provided.innerRef}>
+                    <div
+                      {...provided.droppableProps}
+                      ref={provided.innerRef}
+                      style={{ marginBottom: "0.5rem" }}
+                    >
                       {currentRoutine.tasks.map((task, index) => {
                         return (
                           <Draggable
@@ -259,7 +263,7 @@ const RoutineForm = ({ editing }) => {
                 icon="fas fa-plus"
                 background="success"
                 large
-                margin="md"
+                margin="lg"
               />
             </Flex>
 

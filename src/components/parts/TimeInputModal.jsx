@@ -102,8 +102,8 @@ const TimeInputModal = ({ condition, close, seconds, onChange }) => {
 const CustomInput = styled.input`
   ${inputStyles}
 
+  font-size: 3rem !important;
   width: 7.5rem;
-  font-size: 4rem;
   text-align: center;
 `;
 

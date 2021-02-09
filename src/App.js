@@ -35,6 +35,7 @@ const StyledApp = styled.div`
     ${({ theme }) => saturate(0.275, lighten(0.275, theme.colors.primary))} 100%
   );
   min-height: 100vh;
+  padding-bottom: 12.5rem;
 `;
 
 export default App;
