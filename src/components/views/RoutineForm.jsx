@@ -257,7 +257,7 @@ const RoutineForm = ({ editing }) => {
                 type="button"
                 onClick={addNewTask}
                 icon="fas fa-plus"
-                color="success"
+                background="success"
                 large
                 margin="md"
               />

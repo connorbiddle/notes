@@ -1,13 +1,14 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { MainTitle, SmallText } from "../presentational/Typography";
+import { SmallText } from "../presentational/Typography";
+import Logo from "../../assets/logo.svg";
 
 const TitleBar = () => {
   return (
     <StyledTitleBar>
-      <MainTitle light>
-        <Link to="/">Notes</Link>
-      </MainTitle>
+      <Link to="/">
+        <img src={Logo} alt="Notes" />
+      </Link>
       <SmallText light>
         A practice routine planner for musical instruments
       </SmallText>
@@ -16,11 +17,21 @@ const TitleBar = () => {
 };
 
 const StyledTitleBar = styled.section`
-  padding: 1.5rem 0;
+  padding: 1.25rem 0;
   text-align: center;
+
+  img {
+    width: 175px;
+  }
 
   @media (min-width: ${({ theme }) => theme.sizes.lg}) {
     text-align: left;
+    display: flex;
+    align-items: center;
+
+    img {
+      margin-right: 1.5rem;
+    }
   }
 `;
 

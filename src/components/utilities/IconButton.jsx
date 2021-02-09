@@ -34,8 +34,8 @@ const Styles = css`
         css`
           background: ${theme.colors[background]};
           color: #fff;
-          width: 2.75em;
-          height: 2.75em;
+          width: 2.5em;
+          height: 2.5em;
           display: flex;
           align-items: center;
           justify-content: center;

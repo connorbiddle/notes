@@ -11,7 +11,7 @@ const GetStarted = () => {
         Welcome to Notes!
       </MainTitle>
       <Title textAlign="center" light mBot={4}>
-        Looks like you've got nothing saved yet.
+        To get started, create your first practice routine.
       </Title>
       <Link to="/new">
         <Button color="success" icon="fas fa-caret-right" center>
