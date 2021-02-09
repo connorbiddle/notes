@@ -56,6 +56,13 @@ const TimerModal = ({ task, close }) => {
     alarm.play();
   };
 
+  const closeTimer = () => {
+    setIsPlaying(false);
+    stopTimer();
+    close();
+    clearInterval(intervalID);
+  };
+
   useEffect(() => {
     alarm.loop = true;
 
@@ -68,7 +75,7 @@ const TimerModal = ({ task, close }) => {
   }, []);
 
   return (
-    <Modal condition={task !== null} close={close}>
+    <Modal condition={task !== null} close={closeTimer}>
       <Flex justifyContent="space-between" flexDirection="column" height="100%">
         <Flex
           alignItems="center"

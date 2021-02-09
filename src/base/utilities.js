@@ -1,3 +1,22 @@
+export const throttle = (fn, limit) => {
+  let inThrottle;
+  return function () {
+    const args = arguments;
+    const context = this;
+    if (!inThrottle) {
+      fn.apply(context, args);
+      inThrottle = true;
+      setTimeout(() => (inThrottle = false), limit);
+    }
+  };
+};
+
+// Get the coordinates for the centre of a DOM node
+export const getNodeCentre = domNode => {
+  const { x, y, width, height } = domNode.getBoundingClientRect();
+  return { x: x + width / 2, y: y + height / 2 };
+};
+
 // Convert numeric seconds value to formatted time string
 export const toTimeString = seconds => {
   let min = Math.floor(seconds / 60);

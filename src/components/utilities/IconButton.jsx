@@ -7,14 +7,18 @@ const IconButton = props => {
       "IconButton does not accept both 'color' and 'background' simultaneously."
     );
 
-  return (
+  return props.div ? (
+    <StyledIconDiv {...props}>
+      <i className={props.icon} />
+    </StyledIconDiv>
+  ) : (
     <StyledIconButton {...props}>
       <i className={props.icon} />
     </StyledIconButton>
   );
 };
 
-const StyledIconButton = styled.button`
+const Styles = css`
   cursor: pointer;
   border: none;
   margin-bottom: ${({ theme, margin }) => (margin ? theme.spacing[margin] : 0)};
@@ -61,6 +65,14 @@ const StyledIconButton = styled.button`
   i.fas {
     font-size: 1em;
   }
+`;
+
+const StyledIconButton = styled.button`
+  ${Styles}
+`;
+
+const StyledIconDiv = styled.div`
+  ${Styles}
 `;
 
 export default IconButton;

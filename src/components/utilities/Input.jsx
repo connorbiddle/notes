@@ -23,7 +23,6 @@ const Input = props => {
 
 // Reused in TimeInput
 export const inputStyles = css`
-  cursor: pointer;
   font-family: inherit;
   display: block;
   border: none;
@@ -41,10 +40,14 @@ export const inputStyles = css`
     return theme.spacing.md;
   }};
 
+  font-size: ${({ large }) => (large ? "1.35rem" : "1rem")};
   font-weight: ${({ large }) => (large ? "bold" : "normal")};
-  font-size: ${({ large }) => (large ? "1.5rem" : "1.125rem")};
   text-align: ${({ center }) => (center ? "center" : "left")};
   width: ${({ width }) => (width ? width : "100%")};
+
+  @media (min-width: ${({ theme }) => theme.sizes.sm}) {
+    font-size: ${({ large }) => (large ? "1.5rem" : "1.125rem")};
+  }
 `;
 
 const StyledInput = styled.input`

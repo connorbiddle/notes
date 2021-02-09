@@ -9,6 +9,7 @@ const GlobalStyles = createGlobalStyle`
 
   body, html {
     font-family: "Raleway", "Segoe UI", sans-serif;
+    overflow-x: hidden;
   }
 
   a {
