@@ -1,3 +1,32 @@
+export class AccurateInterval {
+  constructor(fn, duration) {
+    let _this = this;
+    this.baseline = undefined;
+
+    this.run = function () {
+      if (_this.baseline === undefined) {
+        _this.baseline = new Date().getTime();
+      }
+      fn();
+      let end = new Date().getTime();
+      _this.baseline += duration;
+
+      let nextTick = duration - (end - _this.baseline);
+      if (nextTick < 0) {
+        nextTick = 0;
+      }
+
+      _this.timer = setTimeout(function () {
+        _this.run(end);
+      }, nextTick);
+    };
+
+    this.stop = function () {
+      clearTimeout(_this.timer);
+    };
+  }
+}
+
 export const throttle = (fn, limit) => {
   let inThrottle;
   return function () {
@@ -53,5 +82,5 @@ export const isInvalidTimeChange = (e, type) => {
 
 export const isInvalidMetronomeValue = value => {
   const tempo = parseInt(value);
-  return (value !== "" && isNaN(tempo)) || tempo < 0 || tempo > 500;
+  return (value !== "" && isNaN(tempo)) || tempo < 0 || tempo > 300;
 };

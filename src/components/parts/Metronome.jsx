@@ -5,14 +5,17 @@ import IconButton from "../utilities/IconButton";
 import Card from "../presentational/Card";
 import Flex from "../presentational/Flex";
 import { Row, Column } from "../presentational/Grid";
-import { isInvalidMetronomeValue } from "../../base/utilities";
+import {
+  AccurateInterval,
+  isInvalidMetronomeValue,
+} from "../../base/utilities";
 import MetronomeClick from "../../assets/click.wav";
 
 const Metronome = () => {
+  const [bpm, setBpm] = useState(80);
   const [playing, setPlaying] = useState(false);
   const [visible, setVisible] = useState(false);
-  const [bpm, setBpm] = useState(80);
-  const [intervalID, setIntervalID] = useState(null);
+  const [timer, setTimer] = useState(null);
 
   const metronomeSound = new Audio(MetronomeClick);
 
@@ -20,14 +23,15 @@ const Metronome = () => {
     if (isInvalidMetronomeValue(bpm) || bpm === "" || bpm < 1) return;
 
     const tickFrequency = (60 / bpm) * 1000;
-    const interval = setInterval(tickMetronome, tickFrequency);
+    const interval = new AccurateInterval(tickMetronome, tickFrequency);
 
+    interval.run();
     setPlaying(true);
-    setIntervalID(interval);
+    setTimer(interval);
   };
 
   const pauseMetronome = () => {
-    clearInterval(intervalID);
+    timer.stop();
     setPlaying(false);
   };
 
@@ -44,7 +48,6 @@ const Metronome = () => {
 
     setBpm(e.target.value);
 
-    console.log("playing", playing);
     if (playing) {
       pauseMetronome();
       startMetronome();
