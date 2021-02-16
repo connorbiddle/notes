@@ -16,8 +16,8 @@ function App() {
         <Route exact path="/new" render={() => <RoutineForm />} />
         <Route
           exact
-          path="/edit/:id"
-          render={({ match }) => <RoutineForm editing={match.params.id} />}
+          path="/edit/:slug"
+          render={({ match }) => <RoutineForm editing={match.params.slug} />}
         />
         <Metronome />
       </Container>

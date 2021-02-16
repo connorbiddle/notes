@@ -7,10 +7,12 @@ import Input from "../utilities/Input";
 import TimeInput from "../utilities/TimeInput";
 import Button from "../utilities/Button";
 import IconButton from "../utilities/IconButton";
+import MutedButton from "../utilities/MutedButton";
 import { RoutinesContext } from "../../context/RoutinesContext";
 import { NotificationsContext } from "../../context/NotificationsContext";
 import { v4 as uuid } from "uuid";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import slugify from "slugify";
 
 const RoutineForm = ({ editing }) => {
   const [redirect, setRedirect] = useState(null);
@@ -20,7 +22,7 @@ const RoutineForm = ({ editing }) => {
     RoutinesContext
   );
 
-  const targetRoutine = routines.find(routine => routine.id === editing) || {
+  const targetRoutine = routines.find(routine => routine.slug === editing) || {
     id: uuid(),
     title: "",
     tasks: [{ id: uuid(), name: "", duration: 0 }],
@@ -37,7 +39,7 @@ const RoutineForm = ({ editing }) => {
 
   const deleteCurrentRoutine = () => {
     deleteRoutine(currentRoutine.id);
-    addNotification({ type: "danger", message: "Routine deleted." });
+    addNotification({ type: "success", message: "Routine deleted." });
     sendHome();
   };
 
@@ -90,17 +92,25 @@ const RoutineForm = ({ editing }) => {
       throw new Error('Property "name" or "duration" required.');
   };
 
-  const getRoutineError = () => {
+  const getRoutineError = slug => {
     let error;
 
     if (
       currentRoutine.tasks.some(task => task.name.length < 1) ||
       currentRoutine.title.length < 1
     ) {
-      error = "Some fields were left blank!";
+      error = "Some fields were left blank.";
     }
 
-    if (currentRoutine.tasks.length < 1) error = "Your routine is empty!";
+    if (currentRoutine.tasks.length < 1) error = "Your routine is empty.";
+
+    if (
+      routines.find(
+        routine => routine.slug === slug && routine.id !== currentRoutine.id
+      )
+    ) {
+      error = "Routine must have a unique name.";
+    }
 
     return error;
   };
@@ -108,16 +118,19 @@ const RoutineForm = ({ editing }) => {
   const onFormSubmit = e => {
     e.preventDefault();
 
-    const error = getRoutineError();
+    const slug = slugify(currentRoutine.title, { lower: true });
+    const routineToSave = { ...currentRoutine, slug };
+
+    const error = getRoutineError(slug);
     if (error) {
       addNotification({ message: error, type: "danger" });
       return;
     }
 
     if (editing) {
-      editRoutine(currentRoutine);
+      editRoutine(routineToSave);
     } else {
-      addRoutine(currentRoutine);
+      addRoutine(routineToSave);
     }
 
     addNotification({ message: "Routine saved.", type: "success" });
@@ -132,18 +145,21 @@ const RoutineForm = ({ editing }) => {
 
   const sendHome = () => setRedirect("/");
 
-  return redirect ? (
-    <Redirect
-      to={{
-        pathname: redirect,
-        state: {
-          routine:
-            routines.find(routine => routine.id === currentRoutine.id) ||
-            routines[0],
-        },
-      }}
-    />
-  ) : (
+  if (redirect)
+    return (
+      <Redirect
+        to={{
+          pathname: redirect,
+          state: {
+            routine:
+              routines.find(routine => routine.id === currentRoutine.id) ||
+              routines[0],
+          },
+        }}
+      />
+    );
+
+  return (
     <Row>
       <Column size={12} lg={8}>
         <Card fadeIn>
@@ -256,15 +272,14 @@ const RoutineForm = ({ editing }) => {
               </DragDropContext>
             )}
 
-            <Flex justifyContent="center">
-              <IconButton
+            <Flex justifyContent="center" mBot={3}>
+              <MutedButton
+                icon="fas fa-plus"
                 type="button"
                 onClick={addNewTask}
-                icon="fas fa-plus"
-                background="success"
-                large
-                margin="lg"
-              />
+              >
+                Add task
+              </MutedButton>
             </Flex>
 
             <Row mTop>

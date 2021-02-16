@@ -7,6 +7,7 @@ import { List, ListItem } from "../presentational/List";
 import { Row, Column } from "../presentational/Grid";
 import TimerModal from "../parts/TimerModal";
 import { toTimeString } from "../../base/utilities";
+import MutedButton from "../utilities/MutedButton";
 
 const ActiveRoutine = ({ routine }) => {
   const [currentTask, setCurrentTask] = useState(null);
@@ -23,15 +24,8 @@ const ActiveRoutine = ({ routine }) => {
     <Card mb="1rem" fadeIn key={routine.id}>
       <Flex alignItems="center" justifyContent="space-between">
         <Title>{routine.title}</Title>
-        <Link to={`/edit/${routine.id}`}>
-          <SmallText>
-            <Muted>
-              <Flex alignItems="center">
-                Edit&nbsp;
-                <i className="fas fa-edit" />
-              </Flex>
-            </Muted>
-          </SmallText>
+        <Link to={`/edit/${routine.slug}`}>
+          <MutedButton icon="fas fa-edit">Edit</MutedButton>
         </Link>
       </Flex>
       <List>
