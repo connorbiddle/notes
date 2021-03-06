@@ -3,9 +3,8 @@ import { Route } from "react-router-dom";
 import { lighten, saturate } from "polished";
 import Container from "./components/presentational/Container";
 import Home from "./components/views/Home";
-import TitleBar from "./components/parts/TitleBar";
-import Metronome from "./components/parts/Metronome";
 import RoutineForm from "./components/views/RoutineForm";
+import TitleBar from "./components/parts/TitleBar";
 
 function App() {
   return (
@@ -19,7 +18,7 @@ function App() {
           path="/edit/:slug"
           render={({ match }) => <RoutineForm editing={match.params.slug} />}
         />
-        <Metronome />
+        {/* <Metronome /> */}
       </Container>
     </StyledApp>
   );
