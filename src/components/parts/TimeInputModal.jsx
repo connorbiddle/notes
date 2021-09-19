@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Flex from "../presentational/Flex";
 import { Row, Column } from "../presentational/Grid";
@@ -7,7 +7,13 @@ import Button from "../utilities/Button";
 import { inputStyles } from "../utilities/Input";
 import { isInvalidTimeChange } from "../../base/utilities";
 
-const TimeInputModal = ({ condition, close, seconds, onChange }) => {
+const TimeInputModal = ({
+  condition,
+  close,
+  seconds,
+  setDragDisabled,
+  onChange,
+}) => {
   const paddedSecs = seconds % 60 < 10 ? `0${seconds % 60}` : null;
 
   const [mins, setMins] = useState(Math.floor(seconds / 60));
@@ -46,6 +52,10 @@ const TimeInputModal = ({ condition, close, seconds, onChange }) => {
     setSecs(paddedSecs || seconds % 60);
     close();
   };
+
+  useEffect(() => {
+    setDragDisabled(condition ? true : false);
+  }, [condition, setDragDisabled]);
 
   return (
     <Modal condition={condition} close={closeTimeModal}>
@@ -103,13 +113,13 @@ const CustomInput = styled.input`
   ${inputStyles}
 
   font-size: 3rem !important;
-  width: 7.5rem;
+  width: 5.5rem;
   text-align: center;
 `;
 
 const Separator = styled.span`
   font-size: 3rem;
-  padding: 0 1rem 0.75rem;
+  padding: 0 0.5rem 0.75rem;
 `;
 
 export default TimeInputModal;

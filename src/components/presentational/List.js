@@ -39,7 +39,7 @@ const StyledListItem = styled.li`
       padding-left: ${theme.spacing.md};
     `};
 
-  ${({ theme, hoverable, active }) =>
+  ${({ hoverable, active }) =>
     hoverable &&
     !active &&
     css`

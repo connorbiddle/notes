@@ -20,6 +20,7 @@ const TimeInput = props => {
         close={closeModal}
         seconds={props.value}
         onChange={props.onChange}
+        setDragDisabled={props.setDragDisabled}
       />
     </>
   );

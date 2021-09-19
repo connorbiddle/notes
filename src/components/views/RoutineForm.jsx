@@ -18,9 +18,8 @@ const RoutineForm = ({ editing }) => {
   const [redirect, setRedirect] = useState(null);
 
   const { addNotification } = useContext(NotificationsContext);
-  const { routines, addRoutine, editRoutine, deleteRoutine } = useContext(
-    RoutinesContext
-  );
+  const { routines, addRoutine, editRoutine, deleteRoutine } =
+    useContext(RoutinesContext);
 
   const targetRoutine = routines.find(routine => routine.slug === editing) || {
     id: uuid(),
@@ -29,6 +28,7 @@ const RoutineForm = ({ editing }) => {
   };
 
   const [currentRoutine, setCurrentRoutine] = useState(targetRoutine);
+  const [dragDisabled, setDragDisabled] = useState(false);
 
   const onTitleChange = e => {
     setCurrentRoutine(oldRoutine => ({
@@ -205,6 +205,7 @@ const RoutineForm = ({ editing }) => {
                             key={task.id}
                             draggableId={task.id}
                             index={index}
+                            isDragDisabled={dragDisabled}
                           >
                             {provided => (
                               <Row
@@ -219,6 +220,7 @@ const RoutineForm = ({ editing }) => {
                                     onChange={value =>
                                       onTaskChange(value, task.id, "duration")
                                     }
+                                    setDragDisabled={setDragDisabled}
                                     noMargin
                                   />
                                 </Column>
